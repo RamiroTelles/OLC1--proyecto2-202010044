@@ -1,0 +1,197 @@
+package analizador;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import structuras.tablaJson;
+
+import structuras.arbol;
+
+parser code
+{:
+
+        ArrayList<arbol> arbolesER = new ArrayList();
+
+        public ArrayList getArboles(){
+                return arbolesER;
+        }
+
+        ArrayList<tablaJson> tablaS = new ArrayList();
+
+        public ArrayList getTablaS(){
+                return tablaS;
+        }
+
+:}
+
+//Terminales
+
+terminal String PAR_IZQ, PAR_DER,MAS,POR,FLECHA,LLAVE_IZQ,LLAVE_DER;
+terminal String DOSPUNTOS,INT,PUNTO,CONJ,RSALTOLINEA;
+terminal String COMA;
+terminal String RCOMILLAD,RCOMILLAS;
+terminal String ID,CULEBRA,STRING,CARACTER;
+terminal String BARRA_V;
+terminal String PUNTOCOMA;
+
+
+
+//no terminales
+non terminal main;
+
+non terminal String sentencias;
+non terminal String sentencia;
+non terminal String conjunto;
+non terminal String expRel;
+
+non terminal String expCon;
+non terminal String expCon1;
+
+non terminal arbol op;
+non terminal arbol op1;
+non terminal arbol op2;
+non terminal arbol op3;
+non terminal arbol op4;
+non terminal arbol e;
+
+non terminal String valor;
+non terminal String valor1;
+
+
+//precendencia
+
+//precedence left else,elseif
+
+
+
+//producciones
+
+start with main;
+
+main::= LLAVE_IZQ sentencias LLAVE_DER;
+
+sentencias::= sentencias sentencia 
+        | sentencia
+;
+
+sentencia::= conjunto
+        | expRel
+;
+
+conjunto ::= CONJ DOSPUNTOS ID:id FLECHA expCon:ex PUNTOCOMA {: tablaS.add(new tablaJson(id,ex)); :}
+
+; 
+
+expRel::= ID FLECHA e:a1 PUNTOCOMA {: arbolesER.add(a1); :}
+; 
+
+
+
+expCon::= ID:id {:RESULT=id; :}    
+        |CARACTER:caracter {:RESULT=caracter; :}
+        |STRING:string {:RESULT=string; :}
+        |expCon:ex1 expCon1:ex2 {: RESULT= ex1 + ex2; :}
+;
+
+expCon1::= CULEBRA:c CARACTER:caracter {: RESULT=c+caracter; :}
+        |CULEBRA:c ID:id {: RESULT=c+id; :}
+        |CULEBRA:c STRING:string {: RESULT=c+string; :}
+        |COMA:coma CARACTER:caracter {: RESULT=coma+caracter; :}
+        |COMA:coma ID:id {: RESULT=coma+id; :}
+        |COMA:coma STRING:string {: RESULT=coma+string; :}
+    
+        
+;
+
+
+
+e    ::= valor:v1 {: RESULT=new arbol(v1); :}
+        |op:a1 {: RESULT=a1; :}
+;
+
+valor::= PAR_IZQ valor1:v1 PAR_DER {: RESULT=v1; :}
+        | valor1:v1 {: RESULT=v1; :}
+;
+
+valor1 ::= ID:id {: RESULT=id; :}
+        |CARACTER:caracter {: RESULT=caracter; :}
+        |STRING:cadena {: RESULT = cadena; :}
+      
+;
+
+op   ::= BARRA_V:op e:v1 e:v2 {: arbol operacion = new arbol(op);
+                                operacion.añadirHijo(v1);
+                                operacion.añadirHijo(v2);
+                                RESULT = operacion; :} 
+        | op1:a1 {: RESULT= a1; :}
+; 
+
+op1  ::= PUNTO:op e:v1 e:v2 {: arbol operacion = new arbol(op);
+                                operacion.añadirHijo(v1);
+                                operacion.añadirHijo(v2);
+                                RESULT = operacion; :}
+        |op2:a1 {: RESULT= a1; :}
+;
+
+op2  ::= INT:op e:v1 {: arbol operacion = new arbol("|");
+                                operacion.añadirHijo(v1);
+                                operacion.añadirHijo(new arbol("epsilon"));
+                                
+                                RESULT = operacion; :}
+        |op3:a1 {: RESULT= a1; :}
+;
+
+op3  ::= MAS:op e:v1 {: arbol operacion = new arbol(".");
+                                operacion.añadirHijo(v1);
+                                arbol kleene = new arbol("*");
+                                kleene.añadirHijo(v1);
+                                operacion.añadirHijo(kleene);
+                                
+                                RESULT = operacion; :}
+        |op4:a1 {: RESULT= a1; :}
+;
+
+op4 ::= POR:op e:v1 {: arbol operacion = new arbol(op);
+                                operacion.añadirHijo(v1);
+                                
+                                RESULT = operacion; :}
+;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
