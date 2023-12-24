@@ -167,7 +167,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             scanner scan1 = new scanner(new java.io.StringReader(txt));
 
             parser parser1 = new parser(scan1);
-            parser1.parse();
+            //parser1.parse();
+            //arbol resultado = parser1.getArbol();
+            arbol resultado = (arbol)parser1.parse().value;
             System.out.println("Analisis realizado correctamente");
             
             

@@ -8,16 +8,24 @@ import structuras.arbol;
 parser code
 {:
 
-        ArrayList<arbol> arbolesER = new ArrayList();
+        arbol resultado;
 
-        public ArrayList getArboles(){
-                return arbolesER;
+        public arbol getArbol(){
+                return resultado;
         }
 
         ArrayList<tablaJson> tablaS = new ArrayList();
 
         public ArrayList getTablaS(){
                 return tablaS;
+        }
+
+        public void syntax_error(Symbol s){
+	        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
+        }
+
+        public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
+	        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
         }
 
 :}
@@ -38,17 +46,17 @@ terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE;
 //no terminales
 
 
-non terminal String instrucciones;
-non terminal String instruccion;
+non terminal arbol instrucciones;
+non terminal arbol instruccion;
 
 
-non terminal String asignacion;
+non terminal arbol asignacion;
 
-non terminal String declaracion1;
-non terminal String declaracion2;
+non terminal arbol declaracion1;
+non terminal arbol declaracion2;
 
 
-non terminal String varTipo;
+non terminal arbol varTipo;
 
 non terminal arbol expLog;
 non terminal arbol expLog1;
@@ -81,105 +89,371 @@ non terminal arbol datoArray;
 
 start with instrucciones;
 
-instrucciones::= instrucciones instruccion
-                |instruccion
+instrucciones::= instrucciones:a1 instruccion:a2 {: arbol instrucciones = new arbol("instrucciones");
+                        instrucciones.añadirHijo(a1);
+                        instrucciones.añadirHijo(a2);
+                RESULT=instrucciones;
+                :}
+                |instruccion:a {: arbol instrucciones = new arbol("instrucciones");
+                        instrucciones.añadirHijo(a);
+                RESULT=instrucciones;
+                :}
 ;
 
-instruccion::= declaracion1
-        |asignacion
+instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
+                        instruccion.añadirHijo(a);
+                RESULT=instruccion;
+                :}
+        |asignacion:a {: arbol instruccion = new arbol("instruccion");
+                        instruccion.añadirHijo(a);
+                RESULT=instruccion;
+                :}
 
 ;
 
-asignacion::= ID IGUAL expLog PUNTOCOMA;
+asignacion::= ID:id IGUAL:igual expLog:v1 PUNTOCOMA:pc {: arbol asignacion = new arbol("asignacion");
+                        
+                       
+                                                
+                                                asignacion.añadirHijo(new arbol(id));
+                                                asignacion.añadirHijo(new arbol(igual));
+                                                asignacion.añadirHijo(v1);
+                                                asignacion.añadirHijo(new arbol(pc));
+                                                
+                        
+                                                RESULT=asignacion;
+                                                :}
 
-declaracion1 ::= varTipo:a ID declaracion2 
 ;
 
-
-
-declaracion2::= IGUAL expLog PUNTOCOMA
-        |PUNTOCOMA
-;
-
-varTipo ::= RSTRING
-        |RDOUBLE 
-        |RINT
-        |RCHAR
-        |RBOOL
-;
-
-expLog::= expLog OR expLog1
-        |expLog1 
-;
-
-expLog1 ::= expLog1 AND expLog2
-        |expLog2 
-;
-
-expLog2 ::= expNot expRel
-        |expRel 
-;
-
-expNot ::= expNot NOT
-        |NOT
-;
-
-
-
-
-expRel::= expRel expRel1
-        |expArit 
-;
-
-expRel1::= MAYOR expArit
-        |MENOR expArit
-        |MAYORIGUAL expArit
-        |MENORIGUAL expArit
-        |EQUIVALENTE expArit
-        |DISTINTO expArit
+declaracion1 ::= varTipo:tipo ID:id declaracion2:dec2 {: arbol declaracion1 = new arbol("declaracion1");
+                        
+                       
+                                                declaracion1.añadirHijo(tipo);
+                                                declaracion1.añadirHijo(new arbol(id));
+                                                declaracion1.añadirHijo(dec2);
+                                                
+                        
+                                                RESULT=declaracion1;
+                                                :}
 ;
 
 
-expArit::= expArit expArit2
-        |expArit3 
+
+declaracion2::= IGUAL:igual expLog:v1 PUNTOCOMA:pc {: arbol declaracion2 = new arbol("declaracion2");
+                        
+                       
+                                                declaracion2.añadirHijo(new arbol(igual));
+                                                declaracion2.añadirHijo(v1);
+                                                declaracion2.añadirHijo(new arbol(pc));
+                                                
+                        
+                                                RESULT=declaracion2;
+                                                :}
+        |PUNTOCOMA:pc {: arbol declaracion2 = new arbol("declaracion2");
+                        declaracion2.añadirHijo(new arbol(pc));
+                RESULT=declaracion2;
+                :}
 ;
 
-expArit2::= MAS expArit3
-        |MENOS expArit3
+varTipo ::= RSTRING:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
+        |RDOUBLE:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
+        |RINT:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
+        |RCHAR:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
+        |RBOOL:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
 ;
 
-expArit3::= expArit3 POR expArit4
-        |expArit4
+expLog::= expLog:v1 OR:or expLog1:v2 {: arbol expLog = new arbol("expLog");
+                        
+                       
+                        expLog.añadirHijo(v1);
+                        expLog.añadirHijo(new arbol(or));
+                        expLog.añadirHijo(v2);
+                        
+                        RESULT=expLog;
+                        :}
+        |expLog1:v1 {: arbol expLog = new arbol("expLog");
+                        
+        expLog.añadirHijo(v1);
+                        
+        RESULT=expLog;
+        :}
 ;
 
-expArit4::= expArit4 DIV expPrima
-        |expPrima
+expLog1 ::= expLog1:v1 AND:and  expLog2:v2 {: arbol expLog1 = new arbol("expLog1");
+                        
+                       
+                        expLog1.añadirHijo(v1);
+                        expLog1.añadirHijo(new arbol(and));
+                        expLog1.añadirHijo(v2);
+                        
+                        RESULT=expLog1;
+                        :}
+        |expLog2:v1 {: arbol expLog1 = new arbol("expLog1");
+                        
+        expLog1.añadirHijo(v1);
+                        
+        RESULT=expLog1;
+        :}
 ;
 
-expPrima::= PAR_IZQ expLog PAR_DER
-        |valor1
+expLog2 ::= expNot:v1 expRel:v2 {: arbol expLog2 = new arbol("expLog2");
+                        
+                       
+                        expLog2.añadirHijo(v1);
+                        expLog2.añadirHijo(v2);
+                        
+                        RESULT=expLog2;
+                        :}
+        |expRel:v1 {: arbol expLog2 = new arbol("expLog2");
+                        
+        expLog2.añadirHijo(v1);
+                        
+        RESULT=expLog2;
+        :}
         
 ;
 
-valor1::= MENOS expPrima
-        |valor
+expNot ::= expNot:v1 NOT:not {: arbol expNot = new arbol("expNot");
+                        
+                       
+                        expNot.añadirHijo(v1);
+                        expNot.añadirHijo(new arbol(not));
+                        
+                        RESULT=expNot;
+                        :}
+        |NOT:not 
+        {: arbol expNot = new arbol("expNot");
+                        
+        expNot.añadirHijo(new arbol(not));
+                        
+        RESULT=expNot;
+        :}
 ;
 
 
 
 
-valor ::= STRING
-        |INT
-        |DECIMAL
-        |ID
+expRel::= expRel:v1 expRel1:v2 {: arbol expRel = new arbol("expRel");
+                        
+                       
+                        expRel.añadirHijo(v1);
+                        expRel.añadirHijo(v2);
+                        
+                        RESULT=expRel;
+                        :}
+        |expArit:v1 {: arbol expRel = new arbol("expRel");
+                        
+                        expRel.añadirHijo(v1);
+                        
+                        RESULT=expRel;
+                        :}
+;
+
+
+expRel1::= MAYOR:mayor expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(mayor));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+        |MENOR:menor expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(menor));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+        |MAYORIGUAL:mayorigual expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(mayorigual));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+        |MENORIGUAL:menorigual  expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(menorigual));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+        |EQUIVALENTE:equivalente expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(equivalente));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+        |DISTINTO:distinto  expArit:v1 {: arbol expRel1 = new arbol("expRel1");
+                        
+                       
+                        expRel1.añadirHijo(new arbol(distinto));
+                        expRel1.añadirHijo(v1);
+                        
+                        RESULT=expRel1;
+                        :}
+;
+
+
+expArit::= expArit:v1 expArit2:v2 {: arbol expArit = new arbol("expArit");
+                        
+                        expArit.añadirHijo(v1);
+                        expArit.añadirHijo(v2);
+
+                        RESULT=expArit;
+                        :}
+        |expArit3:v1 {: arbol expArit = new arbol("expArit");
+                        
+                        expArit.añadirHijo(v1);
+                        
+                        RESULT=expArit;
+                        :}
+;
+
+expArit2::= MAS:mas expArit3:v1 {: arbol expArit2 = new arbol("expArit2");
+                        
+                       
+                        expArit2.añadirHijo(new arbol(mas));
+                        expArit2.añadirHijo(v1);
+                        
+                        RESULT=expArit2;
+                        :}
+        |MENOS:menos expArit3:v2 {: arbol expArit2 = new arbol("expArit2");
+                        
+                       
+                        expArit2.añadirHijo(new arbol(menos));
+                        expArit2.añadirHijo(v2);
+                        
+                        RESULT=expArit2;
+                        :}
+;
+
+expArit3::= expArit3:v1 POR:por expArit4:v2 {: arbol expArit3 = new arbol("expArit3");
+                        
+                        expArit3.añadirHijo(v1);
+                        expArit3.añadirHijo(new arbol(por));
+                        expArit3.añadirHijo(v2);
+                        
+                        RESULT=expArit3;
+                        :}
+        |expArit4:v1 {: arbol expArit3 = new arbol("expArit3");
+                        
+                        expArit3.añadirHijo(v1);
+                        
+                        RESULT=expArit3;
+                        :}
+;
+
+expArit4::= expArit4:v1 DIV:div expPrima:v2 {: arbol expArit4 = new arbol("expArit4");
+                        
+                        expArit4.añadirHijo(v1);
+                        expArit4.añadirHijo(new arbol(div));
+                        expArit4.añadirHijo(v2);
+                        
+                        RESULT=expArit4;
+                        :}
+        |expPrima:v1 {: arbol expArit4 = new arbol("expArit4");
+                        
+                        expArit4.añadirHijo(v1);
+                        
+                        RESULT=expArit4;
+                        :}
+;
+
+expPrima::= PAR_IZQ:parI expLog:v1 PAR_DER:parD {: arbol expPrima = new arbol("expPrima");
+                                        expPrima.añadirHijo(new arbol(parI));
+                                        expPrima.añadirHijo(v1);
+                                        expPrima.añadirHijo(new arbol(parD));
+                                        RESULT=expPrima;
+                                        :}
+        |valor1:v1 {: arbol expPrima = new arbol("expPrima");
+                        expPrima.añadirHijo(v1);
+                RESULT=expPrima;
+                :}
+        
+;
+
+valor1::= MENOS:menos expPrima:v1        {: arbol valor1 = new arbol("valor1");
+                                        valor1.añadirHijo(new arbol(menos));
+                                        valor1.añadirHijo(v1);
+
+                                        RESULT=valor1;
+                                :}
+
+
+        |valor:v1  {: arbol valor1 = new arbol("valor1");
+                        valor1.añadirHijo(v1);
+                RESULT=valor1;
+                :}
+;
+
+
+
+
+valor ::= STRING:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
+        |INT:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
+        |DECIMAL:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
+        |ID:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
         |COR_IZQ datoArray COR_DER
-        |RTRUE
-        |RFALSE
-        |TCHAR
+
+        |RTRUE:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
+        |RFALSE:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
+        |TCHAR:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(new arbol(v1));
+                RESULT=valor;
+                :}
 ;
 
-datoArray::= datoArray COMA valor1
-        |valor1
+datoArray::= datoArray:v1 COMA:v2 valor1:v3 {: arbol datoArray = new arbol("datoArray");
+                        datoArray.añadirHijo(v1);
+                        datoArray.añadirHijo(new arbol(v2));
+                        datoArray.añadirHijo(v3);
+                RESULT=datoArray;
+                :}
+        |valor1:v1 {: arbol datoArray = new arbol("datoArray");
+                        datoArray.añadirHijo(v1);
+                RESULT=datoArray;
+                :}
 ;
 
 
