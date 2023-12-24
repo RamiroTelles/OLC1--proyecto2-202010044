@@ -30,11 +30,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.data.general.DefaultPieDataset;
 import structuras.arbol;
-import structuras.automata;
+
 import structuras.tablaJson;
 import structuras.elToken;
 import structuras.fallos;
-import structuras.tran;
+
 
 
 /**
@@ -169,29 +169,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             parser parser1 = new parser(scan1);
             parser1.parse();
             System.out.println("Analisis realizado correctamente");
-            ArrayList<arbol> arbolesER = parser1.getArboles();
-            System.out.println("------------------------------------");
-            int i=0;
-            for(arbol hijo: arbolesER){
-                hijo.imprimirInOrder(hijo);
-                System.out.println("------------------------------------");
-                automata a1 = hijo.generarAutomata(hijo, 0);
-                String nombre = "grafo" + String.valueOf(i);
-                generarGrafo(a1,nombre);
-                automata automataS = a1.metodoSubconjuntos();
-                i++;
-                nombre = "grafo"+String.valueOf(i);
-                generarGrafoSubCon(automataS,nombre);
-                i++;
-                
-            }
             
-            ArrayList<tablaJson> tablaS = parser1.getTablaS();
-            System.out.println("------------------------------------");
-            for(tablaJson var: tablaS){
-                System.out.println("id: "+ var.getId()+ " valor: "+ var.getValor());
-                System.out.println("------------------------------------");
-            }
             
             
             
@@ -268,147 +246,78 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }
     }
     
-    public void generarGrafoSubCon(automata auto,String nombre) throws IOException{
-        
-        String grafica= "digraph L{\n ";
-        String enlaces="";
-        String nodoAceptacion="";
-        for(Integer estado: auto.getEstadosFinales()){
-            nodoAceptacion+=String.valueOf(estado)+ "[ shape=doublecircle];\n";
-        }
-        
-        
-        ArrayList<tran> t1 = auto.getTransiciones();
-        
-        for(tran var: t1){
-            if(var.getCarTransicion().equals("\".\"")){
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=punto ];\n";
-                continue;
-            }
-            
-            if( var.getCarTransicion().substring(0, 1).equals("\"") ){
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion().substring(1,var.getCarTransicion().length()-1) +" ];\n";
-            }else{
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion() +" ];\n";
-            }
-            
-        }
-        
-        grafica = grafica + nodoAceptacion +enlaces +"}";
-        
-        //generar HTML
-        
-        FileWriter fichero=null;
-        PrintWriter pw;
-        try {
-            
-            String path = nombre + ".html";
-            fichero = new FileWriter(path);
-            pw = new PrintWriter(fichero);
-            
-            //Comenzamos a escribir el html
-            pw.println("<html>");
-            pw.println("<head><title>AFD con Subconjuntos</title></head>");
-            pw.println("<body>");
-            pw.println("<div align=\"center\">");
-            pw.println("<h1>AFD con Subconjuntos</h1>");
-            pw.println("<br></br>");
-            pw.print("<img src=\"");
-            pw.print("https://quickchart.io/graphviz?graph=");
-            pw.print(grafica);
-            pw.println("\" >");
-            pw.println("</div");
-            pw.println("</body>");
-            pw.println("</html>");
-            Desktop.getDesktop().open(new File(path));
-            
-            
-        } catch (Exception e) {
-        } finally {
-            if (fichero != null) {
-                fichero.close();
-            }
-        }
-        try {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        
-    }
     
     
     
     
-    public void generarGrafo(automata auto,String nombre) throws IOException{
-        
-        String grafica= "digraph L{\n ";
-        String enlaces="";
-        String nodoAceptacion=String.valueOf(auto.getLastEstadoFinal())+ "[ shape=doublecircle];\n";
-        
-        ArrayList<tran> t1 = auto.getTransiciones();
-        
-        for(tran var: t1){
-            
-            if(var.getCarTransicion().equals("\".\"")){
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=punto ];\n";
-                continue;
-            }
-            
-            if( var.getCarTransicion().substring(0, 1).equals("\"") ){
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion().substring(1,var.getCarTransicion().length()-1) +" ];\n";
-            }else{
-                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion() +" ];\n";
-            }
-            
-        }
-        
-        grafica = grafica + nodoAceptacion +enlaces +"}";
-        
-        //generar HTML
-        
-        FileWriter fichero=null;
-        PrintWriter pw;
-        try {
-            
-            String path = nombre + ".html";
-            fichero = new FileWriter(path);
-            pw = new PrintWriter(fichero);
-            
-            //Comenzamos a escribir el html
-            pw.println("<html>");
-            pw.println("<head><title>AFN por Thompson</title></head>");
-            pw.println("<body>");
-            pw.println("<div align=\"center\">");
-            pw.println("<h1>AFN por Thompson</h1>");
-            pw.println("<br></br>");
-            pw.print("<img src=\"");
-            pw.print("https://quickchart.io/graphviz?graph=");
-            pw.print(grafica);
-            pw.println("\" >");
-            pw.println("</div");
-            pw.println("</body>");
-            pw.println("</html>");
-            Desktop.getDesktop().open(new File(path));
-            
-            
-        } catch (Exception e) {
-        } finally {
-            if (fichero != null) {
-                fichero.close();
-            }
-        }
-        try {
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        
-    }
+//    public void generarGrafo(automata auto,String nombre) throws IOException{
+//        
+//        String grafica= "digraph L{\n ";
+//        String enlaces="";
+//        String nodoAceptacion=String.valueOf(auto.getLastEstadoFinal())+ "[ shape=doublecircle];\n";
+//        
+//        ArrayList<tran> t1 = auto.getTransiciones();
+//        
+//        for(tran var: t1){
+//            
+//            if(var.getCarTransicion().equals("\".\"")){
+//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=punto ];\n";
+//                continue;
+//            }
+//            
+//            if( var.getCarTransicion().substring(0, 1).equals("\"") ){
+//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion().substring(1,var.getCarTransicion().length()-1) +" ];\n";
+//            }else{
+//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion() +" ];\n";
+//            }
+//            
+//        }
+//        
+//        grafica = grafica + nodoAceptacion +enlaces +"}";
+//        
+//        //generar HTML
+//        
+//        FileWriter fichero=null;
+//        PrintWriter pw;
+//        try {
+//            
+//            String path = nombre + ".html";
+//            fichero = new FileWriter(path);
+//            pw = new PrintWriter(fichero);
+//            
+//            //Comenzamos a escribir el html
+//            pw.println("<html>");
+//            pw.println("<head><title>AFN por Thompson</title></head>");
+//            pw.println("<body>");
+//            pw.println("<div align=\"center\">");
+//            pw.println("<h1>AFN por Thompson</h1>");
+//            pw.println("<br></br>");
+//            pw.print("<img src=\"");
+//            pw.print("https://quickchart.io/graphviz?graph=");
+//            pw.print(grafica);
+//            pw.println("\" >");
+//            pw.println("</div");
+//            pw.println("</body>");
+//            pw.println("</html>");
+//            Desktop.getDesktop().open(new File(path));
+//            
+//            
+//        } catch (Exception e) {
+//        } finally {
+//            if (fichero != null) {
+//                fichero.close();
+//            }
+//        }
+//        try {
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        
+//        
+//        
+//    }
  
     public void generarReporteTokens(ArrayList<elToken> listaTokens,String nombre) throws IOException {
         FileWriter fichero=null;
@@ -534,7 +443,6 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
-        jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -561,17 +469,6 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         jTextArea2.setRows(5);
         jScrollPane2.setViewportView(jTextArea2);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -579,39 +476,36 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(259, 259, 259)
-                                .addComponent(jLabel3)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(249, 249, 249)
                         .addComponent(jLabel2)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(30, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(269, 269, 269))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(81, 81, 81)))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(153, 153, 153));
@@ -645,13 +539,11 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -673,7 +565,6 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;

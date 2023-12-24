@@ -8,53 +8,75 @@ package analizador;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int PUNTO = 11;
-  public static final int DOSPUNTOS = 9;
-  public static final int INT = 10;
-  public static final int BARRA_V = 21;
-  public static final int FLECHA = 6;
-  public static final int RSALTOLINEA = 13;
-  public static final int RCOMILLAS = 16;
-  public static final int ID = 17;
-  public static final int POR = 5;
-  public static final int CARACTER = 20;
-  public static final int STRING = 19;
-  public static final int COMA = 14;
+  public static final int TCHAR = 8;
+  public static final int AND = 19;
+  public static final int MENOS = 10;
+  public static final int MENOR = 14;
+  public static final int INT = 25;
+  public static final int OR = 20;
+  public static final int IGUAL = 6;
+  public static final int MENORIGUAL = 16;
+  public static final int DECIMAL = 24;
+  public static final int RSTRING = 27;
+  public static final int NOT = 21;
+  public static final int RINT = 29;
+  public static final int RBOOL = 31;
+  public static final int ID = 22;
+  public static final int POR = 11;
+  public static final int STRING = 23;
+  public static final int COMA = 7;
+  public static final int DISTINTO = 18;
+  public static final int MAYOR = 13;
   public static final int EOF = 0;
-  public static final int RCOMILLAD = 15;
-  public static final int CONJ = 12;
-  public static final int PAR_IZQ = 2;
-  public static final int CULEBRA = 18;
+  public static final int RFALSE = 33;
+  public static final int DIV = 12;
+  public static final int MAYORIGUAL = 15;
+  public static final int PAR_IZQ = 4;
+  public static final int RDOUBLE = 28;
   public static final int error = 1;
-  public static final int PAR_DER = 3;
-  public static final int LLAVE_IZQ = 7;
-  public static final int PUNTOCOMA = 22;
-  public static final int LLAVE_DER = 8;
-  public static final int MAS = 4;
+  public static final int PAR_DER = 5;
+  public static final int RCHAR = 30;
+  public static final int EQUIVALENTE = 17;
+  public static final int COR_IZQ = 2;
+  public static final int PUNTOCOMA = 26;
+  public static final int COR_DER = 3;
+  public static final int RTRUE = 32;
+  public static final int MAS = 9;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
+  "COR_IZQ",
+  "COR_DER",
   "PAR_IZQ",
   "PAR_DER",
-  "MAS",
-  "POR",
-  "FLECHA",
-  "LLAVE_IZQ",
-  "LLAVE_DER",
-  "DOSPUNTOS",
-  "INT",
-  "PUNTO",
-  "CONJ",
-  "RSALTOLINEA",
+  "IGUAL",
   "COMA",
-  "RCOMILLAD",
-  "RCOMILLAS",
+  "TCHAR",
+  "MAS",
+  "MENOS",
+  "POR",
+  "DIV",
+  "MAYOR",
+  "MENOR",
+  "MAYORIGUAL",
+  "MENORIGUAL",
+  "EQUIVALENTE",
+  "DISTINTO",
+  "AND",
+  "OR",
+  "NOT",
   "ID",
-  "CULEBRA",
   "STRING",
-  "CARACTER",
-  "BARRA_V",
-  "PUNTOCOMA"
+  "DECIMAL",
+  "INT",
+  "PUNTOCOMA",
+  "RSTRING",
+  "RDOUBLE",
+  "RINT",
+  "RCHAR",
+  "RBOOL",
+  "RTRUE",
+  "RFALSE"
   };
 }
 

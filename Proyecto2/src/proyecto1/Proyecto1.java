@@ -11,8 +11,8 @@ import java.io.PrintWriter;
 //import java.util.ArrayList;
 
 import structuras.arbol;
-import structuras.automata;
-import structuras.tran;
+
+
 import java.util.ArrayList;
 import structuras.fallos;
 
