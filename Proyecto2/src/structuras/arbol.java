@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class arbol {
     
+    private int id;
     private String lex;
     private int linea;
     private int columna;
@@ -24,9 +25,35 @@ public class arbol {
         this.hijos = new ArrayList();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int enumerarArbol(arbol raiz,int num){
+        
+        for(arbol var: raiz.hijos){
+            num=enumerarArbol(var,num);
+        }
+        
+        raiz.setId(num);
+        num++;
+        return num;
+        
+    }
+    
     public Object getResult() {
         return result;
     }
+
+    public ArrayList<arbol> getHijos() {
+        return hijos;
+    }
+    
+    
 
     public void setResult(Object result) {
         this.result = result;

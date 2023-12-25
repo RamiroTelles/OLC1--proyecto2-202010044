@@ -170,6 +170,8 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             //parser1.parse();
             //arbol resultado = parser1.getArbol();
             arbol resultado = (arbol)parser1.parse().value;
+            resultado.enumerarArbol(resultado, 0);
+            graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
             
             
@@ -253,73 +255,140 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     
     
     
-//    public void generarGrafo(automata auto,String nombre) throws IOException{
-//        
-//        String grafica= "digraph L{\n ";
-//        String enlaces="";
-//        String nodoAceptacion=String.valueOf(auto.getLastEstadoFinal())+ "[ shape=doublecircle];\n";
-//        
-//        ArrayList<tran> t1 = auto.getTransiciones();
-//        
-//        for(tran var: t1){
-//            
-//            if(var.getCarTransicion().equals("\".\"")){
-//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=punto ];\n";
-//                continue;
-//            }
-//            
-//            if( var.getCarTransicion().substring(0, 1).equals("\"") ){
-//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion().substring(1,var.getCarTransicion().length()-1) +" ];\n";
-//            }else{
-//                enlaces+= var.getEstadoActual() + " -> " + var.getEstadoDestino() + " [label=" + var.getCarTransicion() +" ];\n";
-//            }
-//            
-//        }
-//        
-//        grafica = grafica + nodoAceptacion +enlaces +"}";
-//        
-//        //generar HTML
-//        
-//        FileWriter fichero=null;
-//        PrintWriter pw;
-//        try {
-//            
-//            String path = nombre + ".html";
-//            fichero = new FileWriter(path);
-//            pw = new PrintWriter(fichero);
-//            
-//            //Comenzamos a escribir el html
-//            pw.println("<html>");
-//            pw.println("<head><title>AFN por Thompson</title></head>");
-//            pw.println("<body>");
-//            pw.println("<div align=\"center\">");
-//            pw.println("<h1>AFN por Thompson</h1>");
-//            pw.println("<br></br>");
-//            pw.print("<img src=\"");
-//            pw.print("https://quickchart.io/graphviz?graph=");
-//            pw.print(grafica);
-//            pw.println("\" >");
-//            pw.println("</div");
-//            pw.println("</body>");
-//            pw.println("</html>");
-//            Desktop.getDesktop().open(new File(path));
-//            
-//            
-//        } catch (Exception e) {
-//        } finally {
-//            if (fichero != null) {
-//                fichero.close();
-//            }
-//        }
-//        try {
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        
-//        
-//        
-//    }
+    public void graficarAST(arbol resultado,String nombre) throws IOException{
+        
+        String grafica= "digraph L{\n ";
+        String enlaces=obtenerEnlaces(resultado);
+        String nodos=obtenerNodos(resultado);
+        
+        
+        grafica = grafica + nodos +enlaces +"}";
+        
+        //generar HTML
+        
+        FileWriter fichero=null;
+        PrintWriter pw;
+        try {
+            
+            String path = nombre + ".html";
+            fichero = new FileWriter(path);
+            pw = new PrintWriter(fichero);
+            
+            //Comenzamos a escribir el html
+            pw.println("<html>");
+            pw.println("<head><title>AST</title></head>");
+            pw.println("<body>");
+            pw.println("<div align=\"center\">");
+            pw.println("<h1>AST</h1>");
+            pw.println("<br></br>");
+            pw.print("<img src=\"");
+            pw.print("https://quickchart.io/graphviz?graph=");
+            pw.print(grafica);
+            pw.println("\" >");
+            pw.println("</div");
+            pw.println("</body>");
+            pw.println("</html>");
+            Desktop.getDesktop().open(new File(path));
+            
+            
+        } catch (Exception e) {
+        } finally {
+            if (fichero != null) {
+                fichero.close();
+            }
+        }
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+    }
+    
+    public String obtenerNodos(arbol raiz){
+        String nodos ="";
+        
+        for(arbol var: raiz.getHijos()){
+            nodos+= obtenerNodos(var);
+            
+            
+        }
+        if(raiz.getLex().equals(";")){
+            
+            nodos += "n"+raiz.getId()+"[label=puntoComa];\n"; 
+            
+        }else if(raiz.getLex().equals("=")){
+            nodos += "n"+raiz.getId()+"[label=igual];\n";
+            
+        }else if(raiz.getLex().equals("!")){
+            nodos += "n"+raiz.getId()+"[label=Not];\n";
+            
+        }else if(raiz.getLex().equals("&&")){
+            nodos += "n"+raiz.getId()+"[label=AND];\n";
+            
+        }else if(raiz.getLex().equals("||")){
+            nodos += "n"+raiz.getId()+"[label=or];\n";
+            
+        }else if(raiz.getLex().equals(",")){
+            nodos += "n"+raiz.getId()+"[label=Coma];\n";
+            
+        }else if(raiz.getLex().equals("(")){
+            nodos += "n"+raiz.getId()+"[label=Par_Izq];\n";
+            
+        }else if(raiz.getLex().equals(")")){
+            nodos += "n"+raiz.getId()+"[label=Par_Der];\n";
+            
+        }else if(raiz.getLex().equals("[")){
+            nodos += "n"+raiz.getId()+"[label=Cor_Izq];\n";
+            
+        }else if(raiz.getLex().equals("]")){
+            nodos += "n"+raiz.getId()+"[label=Cor_Der];\n";
+            
+        }else if(raiz.getLex().equals(">")){
+            nodos += "n"+raiz.getId()+"[label=Mayor];\n";
+            
+        }else if(raiz.getLex().equals("<")){
+            nodos += "n"+raiz.getId()+"[label=Menor];\n";
+            
+        }else if(raiz.getLex().equals("<=")){
+            nodos += "n"+raiz.getId()+"[label=menorIgual];\n";
+            
+        }else if(raiz.getLex().equals(">=")){
+            nodos += "n"+raiz.getId()+"[label=mayorIgual];\n";
+            
+        }else if(raiz.getLex().equals("==")){
+            nodos += "n"+raiz.getId()+"[label=equivalente];\n";
+            
+        }else if(raiz.getLex().equals("!=")){
+            nodos += "n"+raiz.getId()+"[label=distinto];\n";
+            
+        }else if(raiz.getLex().charAt(0)=='\"'){
+            nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
+            
+        }else if(raiz.getLex().charAt(0)=='\''){
+            nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
+        
+        }else{
+           nodos += "n"+raiz.getId()+"[label="+raiz.getLex()+"];\n"; 
+        }
+        
+        
+        return nodos;
+    }
+    
+    public String obtenerEnlaces(arbol raiz){
+        String enlaces ="";
+        
+        for(arbol var: raiz.getHijos()){
+            enlaces+= obtenerEnlaces(var);
+            enlaces += "n"+raiz.getId()+" -> "+ "n"+var.getId()+"; \n";
+            
+        }
+        
+        return enlaces;
+    }
  
     public void generarReporteTokens(ArrayList<elToken> listaTokens,String nombre) throws IOException {
         FileWriter fichero=null;

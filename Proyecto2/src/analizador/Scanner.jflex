@@ -122,6 +122,24 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     return new Symbol(sym.RFALSE,yyline,yychar,yytext());
 }
 
+"==" { System.out.println("Reconocio "+yytext()+" =="); 
+    listaTokens.add(new elToken(yytext(),"EQUIVALENTE",yyline,yycolumn));
+  
+    return new Symbol(sym.EQUIVALENTE,yyline,yychar, yytext());}
+
+"!=" { System.out.println("Reconocio "+yytext()+" !="); 
+    listaTokens.add(new elToken(yytext(),"DISTINTO",yyline,yycolumn));
+
+"<=" { System.out.println("Reconocio "+yytext()+" <="); 
+    listaTokens.add(new elToken(yytext(),"MENORIGUAL",yyline,yycolumn));
+   
+    return new Symbol(sym.MENORIGUAL,yyline,yychar, yytext());}
+
+">=" { System.out.println("Reconocio "+yytext()+" >="); 
+    listaTokens.add(new elToken(yytext(),"MAYORIGUAL",yyline,yycolumn));
+   
+    return new Symbol(sym.MAYORIGUAL,yyline,yychar, yytext());}
+
 ";" { System.out.println("Reconocio "+yytext()+" punto y coma"); 
         listaTokens.add(new elToken(yytext(),"PUNTOCOMA",yyline,yycolumn));
         
@@ -185,23 +203,11 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     
     return new Symbol(sym.MENOR,yyline,yychar, yytext());}
 
-">=" { System.out.println("Reconocio "+yytext()+" >="); 
-    listaTokens.add(new elToken(yytext(),"MAYORIGUAL",yyline,yycolumn));
-   
-    return new Symbol(sym.MAYORIGUAL,yyline,yychar, yytext());}
 
-"<=" { System.out.println("Reconocio "+yytext()+" <="); 
-    listaTokens.add(new elToken(yytext(),"MENORIGUAL",yyline,yycolumn));
-   
-    return new Symbol(sym.MENORIGUAL,yyline,yychar, yytext());}
 
-"==" { System.out.println("Reconocio "+yytext()+" =="); 
-    listaTokens.add(new elToken(yytext(),"EQUIVALENTE",yyline,yycolumn));
-  
-    return new Symbol(sym.EQUIVALENTE,yyline,yychar, yytext());}
 
-"!=" { System.out.println("Reconocio "+yytext()+" !="); 
-    listaTokens.add(new elToken(yytext(),"DISTINTO",yyline,yycolumn));
+
+
    
 
     return new Symbol(sym.DISTINTO,yyline,yychar, yytext());}
