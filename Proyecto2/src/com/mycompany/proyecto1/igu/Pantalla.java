@@ -47,9 +47,10 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
      * Creates new form Pantalla
      */
 
-   
+    //private int conNot=0;
     private String nombreArchivo ="";
     private int cantTabJson=0;
+    private String consola="";
 
    
     public Pantalla() {
@@ -61,6 +62,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         jMenuItem4.addActionListener(this);
         
         
+    }
+    
+    private void imprimirConsolaLn(String txt){
+        this.consola+=txt;
+        this.consola+="\n";
+        jTextArea2.setText(consola);
+    }
+    
+    private void imprimirConsola(String txt){
+        this.consola+=txt;
+        //this.consola+="\n";
+        jTextArea2.setText(consola);
     }
 
     private void leerArchivo(){
@@ -173,7 +186,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             resultado.enumerarArbol(resultado, 0);
             graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
+            ArrayList<tablaJson> TS = new ArrayList();
             
+            run(resultado,TS);
             
             
             
@@ -195,6 +210,281 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }
 
 
+    }
+    
+    public void run(arbol raiz,ArrayList<tablaJson> TS){
+        
+        for(arbol var: raiz.getHijos()){
+            run(var,TS);
+        }
+        
+        
+        
+        if(raiz.getLex().equals("valor") && raiz.getHijos().size()==1){ // valor->el mero valor
+            if(raiz.obtenerHijo(0).getLex().equalsIgnoreCase("true")){
+                raiz.setResult("1");
+            }else if(raiz.obtenerHijo(0).getLex().equalsIgnoreCase("false")){
+                raiz.setResult("0");
+            }else{
+                raiz.setResult(raiz.obtenerHijo(0).getLex());
+            }
+            
+        }else if(raiz.getLex().equals("valor1") && raiz.getHijos().size()==1){// valor1 -> valor
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("valor1") && raiz.getHijos().size()==2){// valor 1-> menos expPrima
+            try{
+                raiz.setResult(Integer.parseInt((String)raiz.obtenerHijo(1).getResult())*-1);
+            }catch(Exception e){
+                imprimirConsolaLn("Error Semantico, no se puede parsear a int");
+            }
+        }else if(raiz.getLex().equals("expPrima") && raiz.getHijos().size()==1){// expPrima -> valor1
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expArit4") && raiz.getHijos().size()==1){// expArit4 -> expPrima
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expArit3") && raiz.getHijos().size()==1){// expArit3 -> expArit4
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expArit") && raiz.getHijos().size()==1){// expArit -> expArit3
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expRel") && raiz.getHijos().size()==1){// expRel -> expArit
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expLog2") && raiz.getHijos().size()==1){// expLog2 -> expRel
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expLog1") && raiz.getHijos().size()==1){// expLog1 -> expLog2
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+        }else if(raiz.getLex().equals("expLog") && raiz.getHijos().size()==1){// expLog -> expLog1
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+            imprimirConsolaLn(String.valueOf(raiz.getResult()));
+            
+            
+            
+        }else if(raiz.getLex().equals("expPrima") && raiz.getHijos().size()==3){// expPrima -> ( expLog )
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+            
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expArit4Prima")){// expArit4Prima -> / expPrima || expArit4Prima -> % expPrima
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+        }else if(raiz.getLex().equals("expArit4") && raiz.getHijos().size()==2){// expArit4 -> expArit4 expArit4Prima
+            try{
+                
+                if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("/")){
+                    //dividir
+                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) / Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    
+                    raiz.setResult(resultado);
+                }else{
+                    //Aplicar modulo
+                    
+                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult() ) ) % Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult() ) );
+                    
+                    raiz.setResult(resultado);
+                }
+                
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+                
+            }
+        }else if(raiz.getLex().equals("expArit3Prima")){// expArit3Prima -> * expArit4 || expArit4Prima -> ^ expArit4
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+            
+            
+            
+        }else if(raiz.getLex().equals("expArit3") && raiz.getHijos().size()==2){// expArit3 -> expArit3 expArit3Prima
+            try{
+                
+                if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("*")){
+                    //multiplicar
+                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) * Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    
+                    raiz.setResult(resultado);
+                }else{
+                    //Potencia
+                    int base=Integer.parseInt(String.valueOf(raiz.obtenerHijo(0).getResult()));
+                    int exp = Integer.parseInt(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    
+                    
+                    
+                    //Object resultado = Integer.parseInt((String)raiz.obtenerHijo(0).getResult()) % Integer.parseInt((String)raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+                    
+                    raiz.setResult(calcularPotencia(base,exp));
+                }
+                
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+            }
+            
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expArit2")){// exparit2 -> + expArit3 || expArit4Prima -> - expArit3
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+            
+            
+            
+        }else if(raiz.getLex().equals("expArit") && raiz.getHijos().size()==2){// expArit -> expArit expArit2
+            try{
+                
+                if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("+")){
+                    //sumar
+                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) + Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    
+                    raiz.setResult(resultado);
+                }else{
+                    //restar
+                    
+                    
+                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) - Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    
+                    raiz.setResult(resultado);
+                }
+                
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+            }
+            
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expRel1")){// expRel1 -> > expArit || expRel1 -> < expArit || expRel1 -> >= expArit || expRel1 -> <= expArit || expRel1 -> == expArit || expRel1 -> != expArit 
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+            
+            
+            
+        }else if(raiz.getLex().equals("expRel") && raiz.getHijos().size()==2){// expRel -> expRel expRel1
+            try{
+                int num1 = Integer.parseInt(String.valueOf(raiz.obtenerHijo(0).getResult()));
+                int num2 = Integer.parseInt(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                String op= String.valueOf(raiz.obtenerHijo(1).obtenerHijo(0).getLex());
+                
+                raiz.setResult(calcularRelacionales(num1,num2,op));
+                
+                
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+            }
+            
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expNot") && raiz.getHijos().size()==1){// expNot-> Not
+            
+            raiz.setResult("1");
+        }else if(raiz.getLex().equals("expNot") && raiz.getHijos().size()==2){// expNot-> expNot Not
+            
+            raiz.setResult(Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult() ) ) +1);
+            
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expLog2") && raiz.getHijos().size()==2){// expLog2-> expNot expRel
+            
+            int conNot= Integer.parseInt( String.valueOf(raiz.obtenerHijo(0).getResult()));
+            
+            if(!(conNot%2==0)){
+                raiz.setResult(negarValor( Integer.parseInt(String.valueOf(raiz.obtenerHijo(1).getResult()))));
+            }else{
+                raiz.setResult(raiz.obtenerHijo(1).getResult());
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    public int calcularPotencia(int base,int exp){
+        int resultado=1;
+        
+        for(int i=0;i<exp;i++){
+            resultado =resultado*base;
+        }
+            
+       return resultado;
+    }
+    
+    public int negarValor(int i){
+        
+        if(i==1){
+            i=0;
+        }else if(i==0){
+            i=1;
+        }else{
+            imprimirConsolaLn("Error Semantico");
+        }
+        return i;
+    }
+    
+    public int calcularRelacionales(int num1, int num2,String op){
+        int resultado=0;
+        
+        switch(op){
+                 
+                    case "<":
+                        
+                        if(num1<num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        
+                        break;
+                    case ">":
+                        
+                        if(num1>num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    case ">=":
+                        
+                        if(num1>=num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    case "<=":
+                        
+                        if(num1<=num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    case "==":
+                        
+                        if(num1==num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    case "!=":
+                        
+                        if(num1!=num2){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    
+                }
+        
+        return resultado;
     }
     
     public void generarReporteErrores(ArrayList<fallos> errores,String nombre) throws IOException {
@@ -363,6 +653,24 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
         }else if(raiz.getLex().equals("!=")){
             nodos += "n"+raiz.getId()+"[label=distinto];\n";
+            
+        }else if(raiz.getLex().equals("+")){
+            nodos += "n"+raiz.getId()+"[label=Mas];\n";
+            
+        }else if(raiz.getLex().equals("-")){
+            nodos += "n"+raiz.getId()+"[label=Menos];\n";
+            
+        }else if(raiz.getLex().equals("*")){
+            nodos += "n"+raiz.getId()+"[label=Por];\n";
+            
+        }else if(raiz.getLex().equals("/")){
+            nodos += "n"+raiz.getId()+"[label=Div];\n";
+            
+        }else if(raiz.getLex().equals("^")){
+            nodos += "n"+raiz.getId()+"[label=Potencia];\n";
+            
+        }else if(raiz.getLex().equals("%")){
+            nodos += "n"+raiz.getId()+"[label=modulo];\n";
             
         }else if(raiz.getLex().charAt(0)=='\"'){
             nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";

@@ -33,7 +33,7 @@ parser code
 //Terminales
 
 terminal String COR_IZQ,COR_DER,PAR_IZQ,PAR_DER;
-terminal String IGUAL,COMA,TCHAR;
+terminal String IGUAL,COMA,TCHAR,POTENCIA,MODULO;
 terminal String MAS,MENOS, POR,DIV,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL,EQUIVALENTE,DISTINTO;
 terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
@@ -70,6 +70,9 @@ non terminal arbol expArit;
 non terminal arbol expArit2;
 non terminal arbol expArit3;
 non terminal arbol expArit4;
+
+non terminal arbol expArit3Prima;
+non terminal arbol expArit4Prima;
 
 non terminal arbol expPrima;
 
@@ -350,10 +353,10 @@ expArit2::= MAS:mas expArit3:v1 {: arbol expArit2 = new arbol("expArit2");
                         :}
 ;
 
-expArit3::= expArit3:v1 POR:por expArit4:v2 {: arbol expArit3 = new arbol("expArit3");
+expArit3::= expArit3:v1 expArit3Prima:v2 {: arbol expArit3 = new arbol("expArit3");
                         
                         expArit3.añadirHijo(v1);
-                        expArit3.añadirHijo(new arbol(por));
+                        
                         expArit3.añadirHijo(v2);
                         
                         RESULT=expArit3;
@@ -366,10 +369,28 @@ expArit3::= expArit3:v1 POR:por expArit4:v2 {: arbol expArit3 = new arbol("expAr
                         :}
 ;
 
-expArit4::= expArit4:v1 DIV:div expPrima:v2 {: arbol expArit4 = new arbol("expArit4");
+expArit3Prima::= POR:por expArit4:v1 {: arbol expArit3Prima = new arbol("expArit3Prima");
+                        
+                       
+                        expArit3Prima.añadirHijo(new arbol(por));
+                        expArit3Prima.añadirHijo(v1);
+                        
+                        RESULT=expArit3Prima;
+                        :}
+                |POTENCIA:potencia expArit4:v1 {: arbol expArit3Prima = new arbol("expArit3Prima");
+                        
+                       
+                        expArit3Prima.añadirHijo(new arbol(potencia));
+                        expArit3Prima.añadirHijo(v1);
+                        
+                        RESULT=expArit3Prima;
+                        :}
+;
+
+expArit4::= expArit4:v1 expArit4Prima:v2 {: arbol expArit4 = new arbol("expArit4");
                         
                         expArit4.añadirHijo(v1);
-                        expArit4.añadirHijo(new arbol(div));
+                        
                         expArit4.añadirHijo(v2);
                         
                         RESULT=expArit4;
@@ -379,6 +400,24 @@ expArit4::= expArit4:v1 DIV:div expPrima:v2 {: arbol expArit4 = new arbol("expAr
                         expArit4.añadirHijo(v1);
                         
                         RESULT=expArit4;
+                        :}
+;
+
+expArit4Prima::= DIV:div expPrima:v1 {: arbol expArit4Prima = new arbol("expArit4Prima");
+                        
+                       
+                        expArit4Prima.añadirHijo(new arbol(div));
+                        expArit4Prima.añadirHijo(v1);
+                        
+                        RESULT=expArit4Prima;
+                        :}
+                |MODULO:modulo expPrima:v1 {: arbol expArit4Prima = new arbol("expArit4Prima");
+                        
+                       
+                        expArit4Prima.añadirHijo(new arbol(modulo));
+                        expArit4Prima.añadirHijo(v1);
+                        
+                        RESULT=expArit4Prima;
                         :}
 ;
 

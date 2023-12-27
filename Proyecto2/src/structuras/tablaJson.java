@@ -12,16 +12,57 @@ public class tablaJson {
     
     
     private String id;
-    
+    private String rol;
+    private String tipo;
+    private String entorno;
+    private String pertenece;
     private Object valor;
     
     
-    public tablaJson( String id,  Object valor){
+    public tablaJson( String id,String rol,String tipo,String entorno, String pertenece,  Object valor){
         
         this.id=id;
+        this.rol=rol;
+        this.tipo=tipo;
+        this.entorno=entorno;
+        this.pertenece=pertenece;
         
         this.valor=valor;
         
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getEntorno() {
+        return entorno;
+    }
+
+    public String getPertenece() {
+        return pertenece;
+    }
+
+    
+    
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setEntorno(String entorno) {
+        this.entorno = entorno;
+    }
+
+    public void setPertenece(String pertenece) {
+        this.pertenece = pertenece;
     }
 
    

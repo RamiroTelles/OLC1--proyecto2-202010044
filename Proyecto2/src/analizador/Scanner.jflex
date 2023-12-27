@@ -129,6 +129,7 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
 
 "!=" { System.out.println("Reconocio "+yytext()+" !="); 
     listaTokens.add(new elToken(yytext(),"DISTINTO",yyline,yycolumn));
+    return new Symbol(sym.DISTINTO,yyline,yychar, yytext());}
 
 "<=" { System.out.println("Reconocio "+yytext()+" <="); 
     listaTokens.add(new elToken(yytext(),"MENORIGUAL",yyline,yycolumn));
@@ -203,6 +204,16 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     
     return new Symbol(sym.MENOR,yyline,yychar, yytext());}
 
+"^" { System.out.println("Reconocio "+yytext()+" ^"); 
+    listaTokens.add(new elToken(yytext(),"potencia",yyline,yycolumn));
+    
+    return new Symbol(sym.POTENCIA,yyline,yychar, yytext());}
+
+"%" { System.out.println("Reconocio "+yytext()+" %"); 
+    listaTokens.add(new elToken(yytext(),"MODULO",yyline,yycolumn));
+    
+    return new Symbol(sym.MODULO,yyline,yychar, yytext());}
+
 
 
 
@@ -210,7 +221,7 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
 
    
 
-    return new Symbol(sym.DISTINTO,yyline,yychar, yytext());}
+    
 
 "&&" { System.out.println("Reconocio "+yytext()+" &&"); 
     listaTokens.add(new elToken(yytext(),"AND",yyline,yycolumn));
