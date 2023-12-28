@@ -37,6 +37,8 @@ import structuras.fallos;
 
 
 
+
+
 /**
  *
  * @author Rami
@@ -233,9 +235,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             raiz.setResult(raiz.obtenerHijo(0).getResult());
         }else if(raiz.getLex().equals("valor1") && raiz.getHijos().size()==2){// valor 1-> menos expPrima
             try{
-                raiz.setResult(Integer.parseInt((String)raiz.obtenerHijo(1).getResult())*-1);
+                raiz.setResult(Double.parseDouble((String)raiz.obtenerHijo(1).getResult())*-1);
             }catch(Exception e){
-                imprimirConsolaLn("Error Semantico, no se puede parsear a int");
+                imprimirConsolaLn("Error Semantico, tipo no válido para operacion -");
             }
         }else if(raiz.getLex().equals("expPrima") && raiz.getHijos().size()==1){// expPrima -> valor1
             raiz.setResult(raiz.obtenerHijo(0).getResult());
@@ -253,7 +255,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             raiz.setResult(raiz.obtenerHijo(0).getResult());
         }else if(raiz.getLex().equals("expLog") && raiz.getHijos().size()==1){// expLog -> expLog1
             raiz.setResult(raiz.obtenerHijo(0).getResult());
-            imprimirConsolaLn(String.valueOf(raiz.getResult()));
+            
             
             
             
@@ -271,13 +273,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                 if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("/")){
                     //dividir
-                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) / Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult())) / Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
                     
                     raiz.setResult(resultado);
                 }else{
                     //Aplicar modulo
                     
-                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult() ) ) % Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult() ) );
+                    Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult() ) ) % Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult() ) );
                     
                     raiz.setResult(resultado);
                 }
@@ -297,19 +299,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                 if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("*")){
                     //multiplicar
-                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) * Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult())) * Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
                     
                     raiz.setResult(resultado);
                 }else{
                     //Potencia
-                    int base=Integer.parseInt(String.valueOf(raiz.obtenerHijo(0).getResult()));
-                    int exp = Integer.parseInt(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    double base= Double.parseDouble(String.valueOf(raiz.obtenerHijo(0).getResult()));
+                    double exp = Double.parseDouble(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
                     
                     
                     
                     //Object resultado = Integer.parseInt((String)raiz.obtenerHijo(0).getResult()) % Integer.parseInt((String)raiz.obtenerHijo(1).obtenerHijo(1).getResult());
                     
-                    raiz.setResult(calcularPotencia(base,exp));
+                    raiz.setResult(calcularPotenciaL(base,exp));
                 }
                 
             }catch(Exception e){
@@ -331,21 +333,45 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                 if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("+")){
                     //sumar
-                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) + Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult())) + Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
                     
                     raiz.setResult(resultado);
                 }else{
                     //restar
                     
                     
-                    Object resultado = Integer.parseInt( String.valueOf( raiz.obtenerHijo(0).getResult())) - Integer.parseInt( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                    Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult())) - Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
                     
                     raiz.setResult(resultado);
                 }
                 
             }catch(Exception e){
                 
-                imprimirConsolaLn("Error Semantico");
+                try{
+                
+                    if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("+")){
+                        //Concatenar
+                        Object resultado = String.valueOf( raiz.obtenerHijo(0).getResult()) + String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+
+                        raiz.setResult(resultado);
+                    }else{
+                        //restar
+
+                        imprimirConsolaLn("Error Semantico");
+                        //Object resultado = Double.parseDouble( String.valueOf( raiz.obtenerHijo(0).getResult())) - Double.parseDouble( String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+
+                        //raiz.setResult(resultado);
+                    }
+
+                }catch(Exception e2){
+
+
+
+                    imprimirConsolaLn("Error Semantico");
+                }
+                
+                
+               
             }
             
             
@@ -359,8 +385,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
         }else if(raiz.getLex().equals("expRel") && raiz.getHijos().size()==2){// expRel -> expRel expRel1
             try{
-                int num1 = Integer.parseInt(String.valueOf(raiz.obtenerHijo(0).getResult()));
-                int num2 = Integer.parseInt(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                Double num1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(0).getResult()));
+                Double num2 = Double.valueOf(String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()));
+                
                 String op= String.valueOf(raiz.obtenerHijo(1).obtenerHijo(0).getLex());
                 
                 raiz.setResult(calcularRelacionales(num1,num2,op));
@@ -395,6 +422,55 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             }else{
                 raiz.setResult(raiz.obtenerHijo(1).getResult());
             }
+            
+            
+            
+        }else if(raiz.getLex().equals("expLog") && raiz.getHijos().size()==3){// expLog -> expLog || expLog1
+            
+            try{
+                
+                if( Integer.parseInt( String.valueOf(raiz.obtenerHijo(0).getResult())) ==1 || Integer.parseInt( String.valueOf(raiz.obtenerHijo(2).getResult()))== 1 ){
+                
+                    raiz.setResult("1");
+               
+                }else{
+                    raiz.setResult("0");
+                }
+                
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+                
+            }
+            
+            
+        }else if(raiz.getLex().equals("expLog1") && raiz.getHijos().size()==3){// expLog1-> expLog1 && expLog2
+            
+            try{
+            
+                
+                if( Integer.parseInt( String.valueOf(raiz.obtenerHijo(0).getResult())) ==1 && Integer.parseInt( String.valueOf(raiz.obtenerHijo(2).getResult()))==1){
+                
+                    raiz.setResult("1");
+               
+                }else{
+                    raiz.setResult("0");
+                }
+            }catch(Exception e){
+                
+                imprimirConsolaLn("Error Semantico");
+                
+                //imprimirConsolaLn(String.valueOf(raiz.getResult()));
+                
+            }
+            
+            
+        }else if(raiz.getLex().equals("declaracion2") && raiz.getHijos().size()==3){// declaracion2 -> = expLog ;
+            
+            raiz.setResult(raiz.obtenerHijo(1).getResult());
+            
+            
+            imprimirConsolaLn(String.valueOf(raiz.getResult()));
         }
         
         
@@ -405,13 +481,20 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         
     }
     
-    public int calcularPotencia(int base,int exp){
-        int resultado=1;
+    public double calcularPotencia(double base,int exp){
+        double resultado=1;
         
         for(int i=0;i<exp;i++){
             resultado =resultado*base;
         }
             
+       return resultado;
+    }
+    
+    public double calcularPotenciaL(double base,double exp){
+        double resultado= Math.pow(base, exp);
+        
+        
        return resultado;
     }
     
@@ -427,7 +510,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         return i;
     }
     
-    public int calcularRelacionales(int num1, int num2,String op){
+    
+    
+    public int calcularRelacionales(Double num1, Double num2,String op){
         int resultado=0;
         
         switch(op){
@@ -673,11 +758,11 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             nodos += "n"+raiz.getId()+"[label=modulo];\n";
             
         }else if(raiz.getLex().charAt(0)=='\"'){
-            nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
-            
+            //nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
+            nodos += "n"+raiz.getId()+"[label=cadena];\n";
         }else if(raiz.getLex().charAt(0)=='\''){
-            nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
-        
+            //nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
+            nodos += "n"+raiz.getId()+"[label=Caracter];\n";
         }else{
            nodos += "n"+raiz.getId()+"[label="+raiz.getLex()+"];\n"; 
         }

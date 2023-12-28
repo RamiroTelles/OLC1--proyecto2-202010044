@@ -452,7 +452,7 @@ valor1::= MENOS:menos expPrima:v1        {: arbol valor1 = new arbol("valor1");
 
 
 valor ::= STRING:v1 {: arbol valor = new arbol("valor");
-                        valor.añadirHijo(new arbol(v1));
+                        valor.añadirHijo(new arbol(v1.substring(1,v1.length()-1)));
                 RESULT=valor;
                 :}
         |INT:v1 {: arbol valor = new arbol("valor");

@@ -1278,7 +1278,7 @@ class CUP$parser$actions {
 		int v1right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String v1 = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 arbol valor = new arbol("valor");
-                        valor.añadirHijo(new arbol(v1));
+                        valor.añadirHijo(new arbol(v1.substring(1,v1.length()-1)));
                 RESULT=valor;
                 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("valor",19, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
