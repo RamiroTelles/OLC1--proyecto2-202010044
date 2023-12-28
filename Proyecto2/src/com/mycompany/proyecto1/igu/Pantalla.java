@@ -177,6 +177,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     private void analizarJSON(String txt){
         ArrayList<elToken> listaTokens = new ArrayList();
         ArrayList<fallos> listaErrores = new ArrayList();
+        ArrayList<tablaJson> TS = new ArrayList();
         
         try{
             scanner scan1 = new scanner(new java.io.StringReader(txt));
@@ -188,10 +189,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             resultado.enumerarArbol(resultado, 0);
             graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
-            ArrayList<tablaJson> TS = new ArrayList();
+            
             
             run(resultado,TS);
             
+            for(tablaJson elemento : TS) {
+			System.out.println(elemento.getId()+"\t"+elemento.getRol()+"\t"+elemento.getTipo()+"\t"+elemento.getValor());
+            }
             
             
             listaTokens.addAll(scan1.getTokens());
@@ -470,7 +474,79 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             raiz.setResult(raiz.obtenerHijo(1).getResult());
             
             
-            imprimirConsolaLn(String.valueOf(raiz.getResult()));
+            //imprimirConsolaLn(String.valueOf(raiz.getResult()));
+        }else if(raiz.getLex().equals("declaracion2") && raiz.getHijos().size()==1){// declaracion2 -> ;
+            
+            raiz.setResult(null);
+           
+        }else if(raiz.getLex().equals("declaracion1")){// declaracion1 -> tipo id declaracion2
+            
+            if(raiz.obtenerHijo(2).getResult()==null){
+                //Se envia valor Predeterminado
+                
+                switch(String.valueOf( raiz.obtenerHijo(0).getResult())){
+                    
+                    case "cadena":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","string","global","main",""));
+                        break;
+                    case "caracter":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","char","global","main",'0'));
+                        break;
+                    case "binario":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",1));
+                        break;
+                    case "doble":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","double","global","main",0.0));
+                        break;
+                    case "entero":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","int","global","main",0));
+                        break;
+                }   
+            }else{
+                //Se envia valor Asignado
+                try{
+                    switch(String.valueOf( raiz.obtenerHijo(0).getResult())){
+                    
+                        case "cadena":
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            break;
+                        case "caracter":
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            break;
+                        case "binario":
+                            
+                            if( String.valueOf( raiz.obtenerHijo(2).getResult()).equals("1") ){
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",1));
+                            }else if(String.valueOf( raiz.obtenerHijo(2).getResult()).equals("0")){
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",0));
+                            }else{
+                                imprimirConsolaLn("Error Semantico");
+                            }
+                            
+                            break;
+                        case "doble":
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                            break;
+                        case "entero":
+                            
+                            
+                            double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                            int r2 = (int)r1;
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","int","global","main",r2));
+                            break;
+                    } 
+                    
+                }catch(Exception e){
+                    
+                    imprimirConsolaLn("Error Semantico");
+                    
+                }
+            }
+           
+        }else if(raiz.getLex().equals("varTipo") ){// varTipo -> tipo de variable
+            
+            raiz.setResult(raiz.obtenerHijo(0).getLex().toLowerCase());
+           
         }
         
         
@@ -609,7 +685,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             pw.println("</div");
             pw.println("</body>");
             pw.println("</html>");
-            Desktop.getDesktop().open(new File(path));
+            //Desktop.getDesktop().open(new File(path));
             
             
         } catch (Exception e) {
@@ -663,7 +739,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             pw.println("</div");
             pw.println("</body>");
             pw.println("</html>");
-            Desktop.getDesktop().open(new File(path));
+            //Desktop.getDesktop().open(new File(path));
             
             
         } catch (Exception e) {
@@ -820,7 +896,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             pw.println("</div");
             pw.println("</body>");
             pw.println("</html>");
-            Desktop.getDesktop().open(new File(path));
+            //Desktop.getDesktop().open(new File(path));
             
             
         } catch (Exception e) {
