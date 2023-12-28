@@ -77,6 +77,13 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
 %%
 /* 3. Reglas Semanticas */
 
+"imprimir" {  
+    System.out.println("Reconocio imprimir: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RIMPRIMIR",yyline,yycolumn));
+
+    return new Symbol(sym.RIMPRIMIR,yyline,yychar,yytext());
+}
+
 "cadena" {  
     System.out.println("Reconocio string: "+yytext());
     listaTokens.add(new elToken(yytext(),"RSTRING",yyline,yycolumn));

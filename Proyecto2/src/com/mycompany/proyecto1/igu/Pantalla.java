@@ -355,7 +355,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                     if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equals("+")){
                         //Concatenar
-                        Object resultado = String.valueOf( raiz.obtenerHijo(0).getResult()) + String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+                        String c1 = String.valueOf( raiz.obtenerHijo(0).getResult());
+                        String c2 = String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+                        Object resultado = "\""+c1.substring(1, c1.length()-1)+c2.substring(1,c2.length()-1)+"\"";
 
                         raiz.setResult(resultado);
                     }else{
@@ -487,19 +489,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 switch(String.valueOf( raiz.obtenerHijo(0).getResult())){
                     
                     case "cadena":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","string","global","main",""));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",""));
                         break;
                     case "caracter":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","char","global","main",'0'));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",'0'));
                         break;
                     case "binario":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",1));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
                         break;
                     case "doble":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","double","global","main",0.0));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",0.0));
                         break;
                     case "entero":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","int","global","main",0));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",0));
                         break;
                 }   
             }else{
@@ -508,31 +510,40 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                     switch(String.valueOf( raiz.obtenerHijo(0).getResult())){
                     
                         case "cadena":
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\"'){
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            }else{
+                                imprimirConsolaLn("Error Semantico");
+                            }
+                            
                             break;
                         case "caracter":
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\''){
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                            }else{
+                                imprimirConsolaLn("Error Semantico");
+                            }
                             break;
                         case "binario":
                             
                             if( String.valueOf( raiz.obtenerHijo(2).getResult()).equals("1") ){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",1));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
                             }else if(String.valueOf( raiz.obtenerHijo(2).getResult()).equals("0")){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","bool","global","main",0));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",0));
                             }else{
                                 imprimirConsolaLn("Error Semantico");
                             }
                             
                             break;
                         case "doble":
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
                             break;
                         case "entero":
                             
                             
                             double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
                             int r2 = (int)r1;
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex(),"var","int","global","main",r2));
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
                             break;
                     } 
                     
@@ -547,6 +558,92 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             raiz.setResult(raiz.obtenerHijo(0).getLex().toLowerCase());
            
+        }else if(raiz.getLex().equals("asignacion") ){// asignacion -> id = expLog ;
+            
+            for(tablaJson elemento: TS){
+                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase()))){
+                    try{
+                        switch(elemento.getTipo()){
+
+                            case "string":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\"'){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    elemento.setValor(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                }else{
+                                    imprimirConsolaLn("Error Semantico");
+                                }
+                                
+                                break;
+                            case "char":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\''){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    elemento.setValor(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                }else{
+                                    imprimirConsolaLn("Error Semantico");
+                                }
+                                
+                                break;
+                            case "bool":
+
+                                if( String.valueOf( raiz.obtenerHijo(2).getResult()).equals("1") ){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                                    elemento.setValor("1");
+                                }else if(String.valueOf( raiz.obtenerHijo(2).getResult()).equals("0")){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",0));
+                                    elemento.setValor("0");
+                                }else{
+                                    imprimirConsolaLn("Error Semantico, valor no acorde al tipo");
+                                }
+
+                                break;
+                            case "double":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                                elemento.setValor(Double.parseDouble(String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                break;
+                            case "int":
+
+
+                                double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                int r2 = (int)r1;
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
+                                elemento.setValor(r2);
+                                break;
+                        } 
+
+                    }catch(Exception e){
+
+                        imprimirConsolaLn("Error Semantico,valor no acorde al tipo");
+
+                    }
+                    
+                    return;
+                    
+                }
+            }
+            imprimirConsolaLn("Error Semantico, Variable no declarada");
+           
+        }else if(raiz.getLex().equals("valorId") && raiz.getHijos().size()==1){// valor -> ID
+            for(tablaJson elemento: TS){
+                if(raiz.obtenerHijo(0).getLex().equalsIgnoreCase(elemento.getId())){
+                    
+                    raiz.setResult(elemento.getValor());
+                    return;
+                }
+            }
+            
+            
+            imprimirConsolaLn("Error Semantico, Variable no declarada");
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("sImprimir") ){// sImprimir -> imprimir ( expLog ) ;
+            
+            
+            
+            imprimirConsolaLn( String.valueOf( raiz.obtenerHijo(2).getResult()));
         }
         
         

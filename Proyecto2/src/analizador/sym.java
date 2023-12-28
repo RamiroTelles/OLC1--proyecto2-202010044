@@ -10,6 +10,7 @@ public class sym {
   /* terminals */
   public static final int PAR_DER = 5;
   public static final int DISTINTO = 20;
+  public static final int RIMPRIMIR = 36;
   public static final int RSTRING = 29;
   public static final int RTRUE = 34;
   public static final int POR = 13;
@@ -80,7 +81,8 @@ public class sym {
   "RCHAR",
   "RBOOL",
   "RTRUE",
-  "RFALSE"
+  "RFALSE",
+  "RIMPRIMIR"
   };
 }
 

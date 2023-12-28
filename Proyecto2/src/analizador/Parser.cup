@@ -39,6 +39,7 @@ terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE;
+terminal String RIMPRIMIR;
 
 
 
@@ -81,6 +82,8 @@ non terminal arbol valor;
 non terminal arbol valor1;
 non terminal arbol datoArray;
 
+non terminal arbol sImprimir;
+
 
 //precendencia
 
@@ -101,6 +104,7 @@ instrucciones::= instrucciones:a1 instruccion:a2 {: arbol instrucciones = new ar
                         instrucciones.añadirHijo(a);
                 RESULT=instrucciones;
                 :}
+                
 ;
 
 instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
@@ -111,8 +115,26 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                         instruccion.añadirHijo(a);
                 RESULT=instruccion;
                 :}
-
+        |sImprimir:a {: arbol instruccion = new arbol("instruccion");
+                        instruccion.añadirHijo(a);
+                RESULT=instruccion;
+                :}
 ;
+
+sImprimir::= RIMPRIMIR:imprimir PAR_IZQ:parI expLog:v1 PAR_DER:parD PUNTOCOMA:puntocoma {: 
+                
+                arbol sImprimir = new arbol("sImprimir");
+                sImprimir.añadirHijo(new arbol(imprimir));
+                sImprimir.añadirHijo(new arbol(parI));
+                sImprimir.añadirHijo(v1);
+                sImprimir.añadirHijo(new arbol(parD));
+                sImprimir.añadirHijo(new arbol(puntocoma));
+
+
+                RESULT= sImprimir;
+                :}
+;
+
 
 asignacion::= ID:id IGUAL:igual expLog:v1 PUNTOCOMA:pc {: arbol asignacion = new arbol("asignacion");
                         
@@ -452,7 +474,7 @@ valor1::= MENOS:menos expPrima:v1        {: arbol valor1 = new arbol("valor1");
 
 
 valor ::= STRING:v1 {: arbol valor = new arbol("valor");
-                        valor.añadirHijo(new arbol(v1.substring(1,v1.length()-1)));
+                        valor.añadirHijo(new arbol(v1));
                 RESULT=valor;
                 :}
         |INT:v1 {: arbol valor = new arbol("valor");
@@ -463,7 +485,7 @@ valor ::= STRING:v1 {: arbol valor = new arbol("valor");
                         valor.añadirHijo(new arbol(v1));
                 RESULT=valor;
                 :}
-        |ID:v1 {: arbol valor = new arbol("valor");
+        |ID:v1 {: arbol valor = new arbol("valorId");
                         valor.añadirHijo(new arbol(v1));
                 RESULT=valor;
                 :}
