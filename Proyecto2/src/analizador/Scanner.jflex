@@ -77,6 +77,24 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
 %%
 /* 3. Reglas Semanticas */
 
+
+"sino" {  
+    System.out.println("Reconocio else: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RELSE",yyline,yycolumn));
+
+    return new Symbol(sym.RELSE,yyline,yychar,yytext());
+}
+
+"si" {  
+    System.out.println("Reconocio if: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RIF",yyline,yycolumn));
+
+    return new Symbol(sym.RIF,yyline,yychar,yytext());
+}
+
+
+
+
 "imprimir" {  
     System.out.println("Reconocio imprimir: "+yytext());
     listaTokens.add(new elToken(yytext(),"RIMPRIMIR",yyline,yycolumn));
@@ -157,6 +175,15 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
         listaTokens.add(new elToken(yytext(),"COMA",yyline,yycolumn));
         
         return new Symbol(sym.COMA ,yyline,yychar, yytext());} 
+
+"{" { System.out.println("Reconocio "+yytext()+" {"); 
+    listaTokens.add(new elToken(yytext(),"LL_IZQ",yyline,yycolumn));
+    return new Symbol(sym.LL_IZQ,yyline,yychar, yytext());} 
+
+"}" { System.out.println("Reconocio "+yytext()+" }"); 
+    listaTokens.add(new elToken(yytext(),"LL_DER",yyline,yycolumn));
+    return new Symbol(sym.LL_DER,yyline,yychar, yytext());} 
+
 
 "[" { System.out.println("Reconocio "+yytext()+" ["); 
     listaTokens.add(new elToken(yytext(),"COR_IZQ",yyline,yycolumn));

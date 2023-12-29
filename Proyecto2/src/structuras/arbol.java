@@ -18,6 +18,7 @@ public class arbol {
     private int columna;
     private ArrayList<arbol> hijos;
     private Object result;
+    private boolean act=true;
     //private int numero=0;
     
     public arbol(String lex){
@@ -25,6 +26,18 @@ public class arbol {
         this.hijos = new ArrayList();
     }
 
+    public boolean isAct() {
+        return act;
+    }
+
+    public void setAct(boolean act) {
+        this.act = act;
+    }
+
+    
+    
+    
+    
     public int getId() {
         return id;
     }

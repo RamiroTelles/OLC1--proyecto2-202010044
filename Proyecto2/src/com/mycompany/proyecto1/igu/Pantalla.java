@@ -26,6 +26,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import com.mycompany.proyecto1.igu.grafica;
 import java.lang.reflect.Array;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.data.general.DefaultPieDataset;
@@ -221,7 +222,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     public void run(arbol raiz,ArrayList<tablaJson> TS){
         
         for(arbol var: raiz.getHijos()){
-            run(var,TS);
+            if(var.isAct()){
+                run(var,TS);
+            }  
         }
         
         
@@ -644,6 +647,11 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             
             imprimirConsolaLn( String.valueOf( raiz.obtenerHijo(2).getResult()));
+        }else if(raiz.getLex().equals("sIf") ){// sIf -> if ( expLog ) { instrucciones sIf2
+            
+            ejecutarIf(raiz,TS);
+            
+            
         }
         
         
@@ -651,6 +659,31 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         
         
         
+        
+    }
+    
+    public void ejecutarIf(arbol raiz, ArrayList<tablaJson> TS){ // sIf -> if ( expLog ) { instrucciones sIf2
+        if(String.valueOf(raiz.obtenerHijo(2).getResult()).equals("1")){
+                //ejecutar el if
+                
+                raiz.obtenerHijo(5).setAct(true);
+                run(raiz.obtenerHijo(5),TS);
+                raiz.obtenerHijo(5).setAct(false);
+            }else if(raiz.obtenerHijo(6).getHijos().size()==3){ // sIf -> if ( expLog ) { instrucciones sIf2 && si sIf2-> } else elsePrima 
+                
+                if(raiz.obtenerHijo(6).obtenerHijo(2).getHijos().size()==3){ //&&si elsePrima -> { instrucciones }
+                    //ejecutar el else
+                    raiz.obtenerHijo(6).obtenerHijo(2).obtenerHijo(1).setAct(true);
+                    run(raiz.obtenerHijo(6).obtenerHijo(2).obtenerHijo(1),TS);
+                    raiz.obtenerHijo(6).obtenerHijo(2).obtenerHijo(1).setAct(false);
+                }else{                                                                 // && si elsePrima -> sIf
+                    //viene un else if
+                    ejecutarIf( raiz.obtenerHijo(6).obtenerHijo(2).obtenerHijo(0),TS);
+                    
+                }
+                
+                
+        }
         
     }
     
@@ -725,7 +758,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         break;
                     case "==":
                         
-                        if(num1==num2){
+                        if(Objects.equals(num1, num2)){
                             resultado=1;
                         }else{
                             resultado=0;
@@ -733,7 +766,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         break;
                     case "!=":
                         
-                        if(num1!=num2){
+                        if(!Objects.equals(num1, num2)){
                             resultado=1;
                         }else{
                             resultado=0;
@@ -929,6 +962,12 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
         }else if(raiz.getLex().equals("%")){
             nodos += "n"+raiz.getId()+"[label=modulo];\n";
+            
+        }else if(raiz.getLex().equals("{")){
+            nodos += "n"+raiz.getId()+"[label=LLave_Abre];\n";
+            
+        }else if(raiz.getLex().equals("}")){
+            nodos += "n"+raiz.getId()+"[label=LLave_Cierra];\n";
             
         }else if(raiz.getLex().charAt(0)=='\"'){
             //nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";

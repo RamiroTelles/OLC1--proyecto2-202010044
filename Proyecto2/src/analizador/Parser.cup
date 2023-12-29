@@ -32,14 +32,14 @@ parser code
 
 //Terminales
 
-terminal String COR_IZQ,COR_DER,PAR_IZQ,PAR_DER;
+terminal String COR_IZQ,COR_DER,PAR_IZQ,PAR_DER,LL_IZQ,LL_DER;
 terminal String IGUAL,COMA,TCHAR,POTENCIA,MODULO;
 terminal String MAS,MENOS, POR,DIV,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL,EQUIVALENTE,DISTINTO;
 terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE;
-terminal String RIMPRIMIR;
+terminal String RIMPRIMIR,RIF,RELSE;
 
 
 
@@ -84,6 +84,9 @@ non terminal arbol datoArray;
 
 non terminal arbol sImprimir;
 
+non terminal arbol sIf,sIf2,elsePrima;
+
+
 
 //precendencia
 
@@ -119,6 +122,70 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                         instruccion.añadirHijo(a);
                 RESULT=instruccion;
                 :}
+        |sIf:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                RESULT=instruccion;
+        :}
+;
+
+sIf::= RIF:if1 PAR_IZQ:parI expLog:v1 PAR_DER:parD LL_IZQ:llI instrucciones:ins1 sIf2:if2 {: 
+                
+                arbol sIf = new arbol("sIf");
+               
+                sIf.añadirHijo(new arbol(if1));
+                sIf.añadirHijo(new arbol(parI));
+                sIf.añadirHijo(v1);
+                sIf.añadirHijo(new arbol(parD));
+                sIf.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                sIf.añadirHijo(ins1);
+                sIf.añadirHijo(if2);
+
+                RESULT= sIf;
+                :}
+
+;
+
+sIf2 ::= LL_DER:llD RELSE:else1 elsePrima:v1 {: 
+                
+                arbol sIf2 = new arbol("sIf2");
+               
+                sIf2.añadirHijo(new arbol(llD));
+                
+                sIf2.añadirHijo(new arbol(else1));
+                sIf2.añadirHijo(v1);
+               
+
+
+                RESULT= sIf2;
+                :}
+
+
+        |LL_DER:llD {: arbol sIf2 = new arbol("sIf2");
+                sIf2.añadirHijo(new arbol(llD));
+                RESULT=sIf2;
+        :}
+;
+
+elsePrima ::= LL_IZQ:llI instrucciones:v1 LL_DER:llD {: 
+                
+                arbol elsePrima = new arbol("elsePrima");
+               
+                elsePrima.añadirHijo(new arbol(llI));
+                v1.setAct(false);
+                elsePrima.añadirHijo(v1);
+                elsePrima.añadirHijo(new arbol(llD));
+               
+
+
+                RESULT= elsePrima;
+                :}
+
+
+        | sIf:v1 {: arbol elsePrima = new arbol("elsePrima");
+                elsePrima.añadirHijo(v1);
+                RESULT=elsePrima;
+        :}
 ;
 
 sImprimir::= RIMPRIMIR:imprimir PAR_IZQ:parI expLog:v1 PAR_DER:parD PUNTOCOMA:puntocoma {: 
