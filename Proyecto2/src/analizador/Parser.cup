@@ -39,7 +39,7 @@ terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE;
-terminal String RIMPRIMIR,RIF,RELSE;
+terminal String RIMPRIMIR,RIF,RELSE,RWHILE;
 
 
 
@@ -86,6 +86,8 @@ non terminal arbol sImprimir;
 
 non terminal arbol sIf,sIf2,elsePrima;
 
+non terminal arbol senWhile;
+
 
 
 //precendencia
@@ -126,6 +128,30 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                 instruccion.añadirHijo(v1);
                 RESULT=instruccion;
         :}
+        |senWhile:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                RESULT=instruccion;
+        :}
+;
+
+
+senWhile::= RWHILE:while1 PAR_IZQ:parI expLog:v1 PAR_DER:parD LL_IZQ:llI instrucciones:ins1 LL_DER:llD {: 
+                
+                arbol senWhile = new arbol("senWhile");
+               
+                senWhile.añadirHijo(new arbol(while1));
+                senWhile.añadirHijo(new arbol(parI));
+                senWhile.añadirHijo(v1);
+                senWhile.añadirHijo(new arbol(parD));
+                senWhile.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                senWhile.añadirHijo(ins1);
+                senWhile.añadirHijo(new arbol(llD));
+
+                RESULT= senWhile;
+                :}
+
+
 ;
 
 sIf::= RIF:if1 PAR_IZQ:parI expLog:v1 PAR_DER:parD LL_IZQ:llI instrucciones:ins1 sIf2:if2 {: 

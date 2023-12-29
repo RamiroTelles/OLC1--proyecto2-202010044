@@ -13,6 +13,7 @@ public class sym {
   public static final int RIMPRIMIR = 38;
   public static final int RSTRING = 31;
   public static final int RTRUE = 36;
+  public static final int RWHILE = 41;
   public static final int POR = 15;
   public static final int TCHAR = 10;
   public static final int LL_DER = 7;
@@ -90,7 +91,8 @@ public class sym {
   "RFALSE",
   "RIMPRIMIR",
   "RIF",
-  "RELSE"
+  "RELSE",
+  "RWHILE"
   };
 }
 

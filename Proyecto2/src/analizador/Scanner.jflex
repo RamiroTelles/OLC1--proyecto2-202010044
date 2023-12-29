@@ -92,6 +92,12 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     return new Symbol(sym.RIF,yyline,yychar,yytext());
 }
 
+"mientras" {  
+    System.out.println("Reconocio while: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RWHILE",yyline,yycolumn));
+
+    return new Symbol(sym.RWHILE,yyline,yychar,yytext());
+}
 
 
 

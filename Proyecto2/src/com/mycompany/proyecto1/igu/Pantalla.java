@@ -652,6 +652,16 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             ejecutarIf(raiz,TS);
             
             
+        }else if(raiz.getLex().equals("senWhile") ){// senWhile -> while ( expLog ) { instrucciones }
+            
+            while( String.valueOf(raiz.obtenerHijo(2).getResult()).equals("1") ){
+                raiz.obtenerHijo(5).setAct(true);
+                run(raiz.obtenerHijo(5),TS);
+                raiz.obtenerHijo(5).setAct(false);
+                run(raiz.obtenerHijo(2),TS); //ejecuto otra vez la condicion para actualizarla
+            }
+            
+            
         }
         
         
