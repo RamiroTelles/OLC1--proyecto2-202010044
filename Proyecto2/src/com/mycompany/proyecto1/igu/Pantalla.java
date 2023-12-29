@@ -506,6 +506,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                     case "entero":
                         TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",0));
                         break;
+                    case "void":
+                        imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
+                        break;
                 }   
             }else{
                 //Se envia valor Asignado
@@ -547,6 +550,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
                             int r2 = (int)r1;
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
+                            break;
+                        case "void":
+                            imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
                             break;
                     } 
                     
@@ -660,6 +666,34 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 raiz.obtenerHijo(5).setAct(false);
                 run(raiz.obtenerHijo(2),TS); //ejecuto otra vez la condicion para actualizarla
             }
+            
+            
+        }else if(raiz.getLex().equals("lf1") ){// lf1 -> tipo id ( lparam 
+            
+            //TS.add(new tablaJson( raiz.obtenerHijo(1).getLex() ,"metodo",String.valueOf(raiz.obtenerHijo(0).getResult()),"global","main",""));
+            
+            switch(String.valueOf(raiz.obtenerHijo(0).getResult())){
+                    
+                    case "cadena":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","string","global","main",""));
+                        break;
+                    case "caracter":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","char","global","main",'0'));
+                        break;
+                    case "binario":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1));
+                        break;
+                    case "doble":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0));
+                        break;
+                    case "entero":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0));
+                        break;
+                    case "void":
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null));
+                        break;
+                        
+                }   
             
             
         }

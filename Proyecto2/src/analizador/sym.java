@@ -10,18 +10,19 @@ public class sym {
   /* terminals */
   public static final int PAR_DER = 5;
   public static final int DISTINTO = 22;
-  public static final int RIMPRIMIR = 38;
+  public static final int RIMPRIMIR = 39;
   public static final int RSTRING = 31;
   public static final int RTRUE = 36;
-  public static final int RWHILE = 41;
+  public static final int RWHILE = 42;
   public static final int POR = 15;
   public static final int TCHAR = 10;
+  public static final int RVOID = 38;
   public static final int LL_DER = 7;
   public static final int INT = 29;
   public static final int PUNTOCOMA = 30;
   public static final int COR_DER = 3;
   public static final int RFALSE = 37;
-  public static final int RELSE = 40;
+  public static final int RELSE = 41;
   public static final int NOT = 25;
   public static final int MENORIGUAL = 20;
   public static final int AND = 23;
@@ -47,7 +48,7 @@ public class sym {
   public static final int STRING = 27;
   public static final int RINT = 33;
   public static final int RBOOL = 35;
-  public static final int RIF = 39;
+  public static final int RIF = 40;
   public static final int EQUIVALENTE = 21;
   public static final int MAS = 13;
   public static final String[] terminalNames = new String[] {
@@ -89,6 +90,7 @@ public class sym {
   "RBOOL",
   "RTRUE",
   "RFALSE",
+  "RVOID",
   "RIMPRIMIR",
   "RIF",
   "RELSE",

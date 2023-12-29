@@ -38,7 +38,7 @@ terminal String MAS,MENOS, POR,DIV,MAYOR,MENOR,MAYORIGUAL,MENORIGUAL,EQUIVALENTE
 terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
-terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE;
+terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE,RVOID;
 terminal String RIMPRIMIR,RIF,RELSE,RWHILE;
 
 
@@ -88,6 +88,10 @@ non terminal arbol sIf,sIf2,elsePrima;
 
 non terminal arbol senWhile;
 
+non terminal arbol lf1,lparam,lparam1;
+
+non terminal arbol llamadaFM,lenviarParam,lenviarParam1;
+
 
 
 //precendencia
@@ -99,6 +103,10 @@ non terminal arbol senWhile;
 //producciones
 
 start with instrucciones;
+
+
+
+
 
 instrucciones::= instrucciones:a1 instruccion:a2 {: arbol instrucciones = new arbol("instrucciones");
                         instrucciones.añadirHijo(a1);
@@ -132,6 +140,143 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                 instruccion.añadirHijo(v1);
                 RESULT=instruccion;
         :}
+        |lf1:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                RESULT=instruccion;
+        :}
+        |llamadaFM:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                RESULT=instruccion;
+        :}
+;
+
+llamadaFM::= ID:id PAR_IZQ:parI lenviarParam:parametros {: arbol llamadaFM = new arbol("llamadaFM");
+                llamadaFM.añadirHijo(new arbol(id));
+                llamadaFM.añadirHijo(new arbol(parI));
+                llamadaFM.añadirHijo(parametros);
+                RESULT=llamadaFM;
+        :}
+;
+
+lenviarParam::= lenviarParam1:v1 PAR_DER:parD PUNTOCOMA:puntocoma {: arbol lenviarParam = new arbol("lenviarParam");
+                
+                lenviarParam.añadirHijo(v1);
+                lenviarParam.añadirHijo(new arbol(parD));
+                lenviarParam.añadirHijo(new arbol(puntocoma));
+                
+                RESULT=lenviarParam;
+                :}
+                |PAR_DER:parD PUNTOCOMA:puntocoma {: arbol lenviarParam = new arbol("lenviarParam");
+                
+                
+                lenviarParam.añadirHijo(new arbol(parD));
+                lenviarParam.añadirHijo(new arbol(puntocoma));
+                
+                RESULT=lenviarParam;
+        :}
+;
+
+lenviarParam1::= lenviarParam1:parametros COMA:coma ID:id {: 
+                
+                arbol lenviarParam1 = new arbol("lenviarParam1");
+
+                lenviarParam1.añadirHijo(parametros);
+                lenviarParam1.añadirHijo(new arbol(coma));
+                
+                lenviarParam1.añadirHijo(new arbol(id));
+               
+
+                RESULT= lenviarParam1;
+                :}
+                |ID:id {: 
+                
+                arbol lenviarParam1 = new arbol("lenviarParam1");
+
+                
+                lenviarParam1.añadirHijo(new arbol(id));
+               
+
+                RESULT= lenviarParam1;
+                :}
+; 
+
+
+lf1::= varTipo:tipo ID:id PAR_IZQ:parI lparam:parametros {: 
+                
+                arbol lf1 = new arbol("lf1");
+               
+                lf1.añadirHijo(tipo);
+                lf1.añadirHijo(new arbol(id));
+                lf1.añadirHijo(new arbol(parI));
+                
+                lf1.añadirHijo(parametros);
+
+                RESULT= lf1;
+                :}
+      
+;
+
+lparam::= PAR_DER:parD LL_IZQ:llI instrucciones:ins1 LL_DER:llD {: 
+                
+                arbol lparam = new arbol("lparam");
+               
+                lparam.añadirHijo(new arbol(parD));
+                lparam.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                lparam.añadirHijo(ins1);
+                lparam.añadirHijo(new arbol(llD));
+                
+                
+                
+
+                RESULT= lparam;
+                :}
+
+        |lparam1:parametros PAR_DER:parD LL_IZQ:llI instrucciones:ins1 LL_DER:llD {: 
+                
+                arbol lparam = new arbol("lparam");
+
+                lparam.añadirHijo(parametros);
+                lparam.añadirHijo(new arbol(parD));
+                lparam.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                lparam.añadirHijo(ins1);
+                lparam.añadirHijo(new arbol(llD));
+                
+                
+                
+
+                RESULT= lparam;
+                :}
+;
+
+lparam1::= lparam1:parametros COMA:coma varTipo:tipo ID:id {: 
+                
+                arbol lparam1 = new arbol("lparam1");
+
+                lparam1.añadirHijo(parametros);
+                lparam1.añadirHijo(new arbol(coma));
+                lparam1.añadirHijo(tipo);
+                lparam1.añadirHijo(new arbol(id));
+               
+
+                RESULT= lparam1;
+                :}
+      
+
+        |varTipo:tipo ID:id {: 
+                
+                arbol lparam1 = new arbol("lparam1");
+
+               
+                lparam1.añadirHijo(tipo);
+                lparam1.añadirHijo(new arbol(id));
+               
+
+                RESULT= lparam1;
+                :}
+      
+
 ;
 
 
@@ -291,6 +436,10 @@ varTipo ::= RSTRING:v1 {: arbol varTipo = new arbol("varTipo");
                 RESULT=varTipo;
                 :}
         |RBOOL:v1 {: arbol varTipo = new arbol("varTipo");
+                        varTipo.añadirHijo(new arbol(v1));
+                RESULT=varTipo;
+                :}
+        |RVOID:v1 {: arbol varTipo = new arbol("varTipo");
                         varTipo.añadirHijo(new arbol(v1));
                 RESULT=varTipo;
                 :}

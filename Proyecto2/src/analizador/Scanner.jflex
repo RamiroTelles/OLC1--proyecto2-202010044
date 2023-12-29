@@ -133,6 +133,12 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     return new Symbol(sym.RCHAR,yyline,yychar,yytext());
 } 
 
+"void" {  
+    System.out.println("Reconocio void: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RVOID",yyline,yycolumn)); 
+    return new Symbol(sym.RVOID,yyline,yychar,yytext());
+} 
+
 "binario" {  
     System.out.println("Reconocio bool: "+yytext());
     listaTokens.add(new elToken(yytext(),"RBOOL",yyline,yycolumn)); 
