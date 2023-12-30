@@ -17,6 +17,7 @@ public class tablaJson {
     private String entorno;
     private String pertenece;
     private Object valor;
+    private arbol instrucciones;
     
     
     public tablaJson( String id,String rol,String tipo,String entorno, String pertenece,  Object valor){
@@ -29,6 +30,27 @@ public class tablaJson {
         
         this.valor=valor;
         
+    }
+    
+    public tablaJson( String id,String rol,String tipo,String entorno, String pertenece,  Object valor,arbol instrucciones){
+        
+        this.id=id;
+        this.rol=rol;
+        this.tipo=tipo;
+        this.entorno=entorno;
+        this.pertenece=pertenece;
+        
+        this.valor=valor;
+        this.instrucciones = instrucciones;
+        
+    }
+    
+     public arbol getInstrucciones() {
+        return instrucciones;
+    }
+
+    public void setInstrucciones(arbol instrucciones) {
+        this.instrucciones = instrucciones;
     }
 
     public String getRol() {

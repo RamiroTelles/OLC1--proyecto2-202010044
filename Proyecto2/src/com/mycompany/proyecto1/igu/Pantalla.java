@@ -194,6 +194,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             run(resultado,TS);
             
+            System.out.println("uwu");
             for(tablaJson elemento : TS) {
 			System.out.println(elemento.getId()+"\t"+elemento.getRol()+"\t"+elemento.getTipo()+"\t"+elemento.getValor());
             }
@@ -675,26 +676,118 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             switch(String.valueOf(raiz.obtenerHijo(0).getResult())){
                     
                     case "cadena":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","string","global","main",""));
+                        
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","string","global","main","",raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","string","global","main","",raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        
                         break;
                     case "caracter":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","char","global","main",'0'));
+                        
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                           
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","char","global","main",'0',raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","char","global","main",'0',raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        
                         break;
                     case "binario":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1));
+                        
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                           
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1,raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1,raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1));
                         break;
                     case "doble":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0));
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                           
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0,raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0,raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        
+                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0));
                         break;
                     case "entero":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0));
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                           
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0,raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0,raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        
+                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0));
                         break;
                     case "void":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null));
+                        if(raiz.obtenerHijo(3).getHijos().size()==4){ // &&si lparam -> ) { instrucciones }
+                            //metodo sin parametros
+                           
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null,raiz.obtenerHijo(3).obtenerHijo(2)));
+                        }else{
+                            //metodo con parametros
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null,raiz.obtenerHijo(3).obtenerHijo(3)));
+                            //guardar después sus parametros en TS
+                        }
+                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null));
                         break;
                         
                 }   
             
+            
+        }else if(raiz.getLex().equals("llamadaFM") ){// llamadaFM -> ejecutar id ( lenviarParam ;
+            
+            
+            
+            for(tablaJson elem: TS){
+                if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(1).getLex())){
+                    elem.getInstrucciones().setAct(true);
+                    run(elem.getInstrucciones(),TS);
+                    elem.getInstrucciones().setAct(false);
+                    return;
+                }
+                
+            }
+         
+            imprimirConsolaLn("Error Semantico, Variable no declarada");
+            
+            
+        }else if(raiz.getLex().equals("callFunc") ){// callFunc ->  id ( lenviarParam ;
+            
+            
+            
+            for(tablaJson elem: TS){
+                if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(0).getLex())){
+                    elem.getInstrucciones().setAct(true);
+                    run(elem.getInstrucciones(),TS);
+                    elem.getInstrucciones().setAct(false);
+                    return;
+                }
+                
+            }
+         
+       
+            imprimirConsolaLn("Error Semantico, Metodo no declarada");
             
         }
         
