@@ -39,7 +39,7 @@ terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE,RVOID;
-terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR;
+terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR,RDO,RFOR;
 
 
 
@@ -92,6 +92,8 @@ non terminal arbol lf1,lparam,lparam1;
 
 non terminal arbol llamadaFM,lenviarParam,lenviarParam1,callFunc;
 
+non terminal arbol senDoWhile,senFor;
+
 
 
 
@@ -125,8 +127,9 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                         instruccion.añadirHijo(a);
                 RESULT=instruccion;
                 :}
-        |asignacion:a {: arbol instruccion = new arbol("instruccion");
+        |asignacion:a PUNTOCOMA:pc{: arbol instruccion = new arbol("instruccion");
                         instruccion.añadirHijo(a);
+                        instruccion.añadirHijo(new arbol(pc));
                 RESULT=instruccion;
                 :}
         |sImprimir:a {: arbol instruccion = new arbol("instruccion");
@@ -154,6 +157,68 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                 instruccion.añadirHijo(new arbol(puntocoma));
                 RESULT=instruccion;
         :}
+        |senDoWhile:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                
+                RESULT=instruccion;
+        :}
+        |senFor:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                
+                RESULT=instruccion;
+        :}
+;
+
+
+senFor::= RFOR:for1 PAR_IZQ:parI declaracion1:dec1 expLog:v1 PUNTOCOMA:pc asignacion:asig1 PAR_DER:parD LL_IZQ:llI instrucciones:ins1 LL_DER:llD {: 
+                
+                arbol senFor = new arbol("senFor");
+               
+                senFor.añadirHijo(new arbol(for1));
+                senFor.añadirHijo(new arbol(parI));
+                
+                //dec1.setAct(false);
+                senFor.añadirHijo(dec1);
+
+                senFor.añadirHijo(v1);
+                senFor.añadirHijo(new arbol(pc));
+                asig1.setAct(false);
+                senFor.añadirHijo(asig1);
+                
+                senFor.añadirHijo(new arbol(parD));
+
+                senFor.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                senFor.añadirHijo(ins1);
+                senFor.añadirHijo(new arbol(llD));
+
+                RESULT= senFor;
+                :}
+
+;
+
+
+senDoWhile::= RDO:do1 LL_IZQ:llI instrucciones:ins1 LL_DER:llD RWHILE:while1 PAR_IZQ:parI expLog:v1 PAR_DER:parD PUNTOCOMA:puntocoma {: 
+                
+                arbol senDoWhile = new arbol("senDoWhile");
+               
+                senDoWhile.añadirHijo(new arbol(do1));
+                senDoWhile.añadirHijo(new arbol(llI));
+                ins1.setAct(false);
+                senDoWhile.añadirHijo(ins1);
+                senDoWhile.añadirHijo(new arbol(llD));
+
+                senDoWhile.añadirHijo(new arbol(while1));
+
+                senDoWhile.añadirHijo(new arbol(parI));
+                senDoWhile.añadirHijo(v1);
+                senDoWhile.añadirHijo(new arbol(parD));
+                senDoWhile.añadirHijo(new arbol(puntocoma));
+                
+
+                RESULT= senDoWhile;
+                :}
+
 ;
 
 llamadaFM::= REJECUTAR:ejecutar ID:id PAR_IZQ:parI lenviarParam:parametros PUNTOCOMA:puntocoma {: arbol llamadaFM = new arbol("llamadaFM");
@@ -386,20 +451,48 @@ sImprimir::= RIMPRIMIR:imprimir PAR_IZQ:parI expLog:v1 PAR_DER:parD PUNTOCOMA:pu
 ;
 
 
-asignacion::= ID:id IGUAL:igual expLog:v1 PUNTOCOMA:pc {: arbol asignacion = new arbol("asignacion");
+asignacion::= ID:id IGUAL:igual expLog:v1 {: arbol asignacion = new arbol("asignacion");
                         
                        
                                                 
                                                 asignacion.añadirHijo(new arbol(id));
                                                 asignacion.añadirHijo(new arbol(igual));
                                                 asignacion.añadirHijo(v1);
-                                                asignacion.añadirHijo(new arbol(pc));
+                                                //asignacion.añadirHijo(new arbol(pc));
+                                                
+                        
+                                                RESULT=asignacion;
+                                                :}
+
+                |ID:id MAS:mas1 MAS:mas2 {: arbol asignacion = new arbol("asignacion");
+                        
+                       
+                                                
+                                                asignacion.añadirHijo(new arbol(id));
+                                                asignacion.añadirHijo(new arbol(mas1));
+                                                asignacion.añadirHijo(new arbol(mas2));
+                                                //asignacion.añadirHijo(new arbol(pc));
+                                                
+                        
+                                                RESULT=asignacion;
+                                                :}
+
+                |ID:id MENOS:menos1 MENOS:menos2 {: arbol asignacion = new arbol("asignacion");
+                        
+                       
+                                                
+                                                asignacion.añadirHijo(new arbol(id));
+                                                asignacion.añadirHijo(new arbol(menos1));
+                                                asignacion.añadirHijo(new arbol(menos2));
+                                                //asignacion.añadirHijo(new arbol(pc));
                                                 
                         
                                                 RESULT=asignacion;
                                                 :}
 
 ;
+
+
 
 declaracion1 ::= varTipo:tipo ID:id declaracion2:dec2 {: arbol declaracion1 = new arbol("declaracion1");
                         

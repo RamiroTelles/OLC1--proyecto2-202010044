@@ -31,6 +31,7 @@ public class sym {
   public static final int RDOUBLE = 32;
   public static final int DIV = 16;
   public static final int ID = 26;
+  public static final int RDO = 44;
   public static final int MAYORIGUAL = 19;
   public static final int EOF = 0;
   public static final int DECIMAL = 28;
@@ -48,6 +49,7 @@ public class sym {
   public static final int STRING = 27;
   public static final int RINT = 33;
   public static final int REJECUTAR = 43;
+  public static final int RFOR = 45;
   public static final int RBOOL = 35;
   public static final int RIF = 40;
   public static final int EQUIVALENTE = 21;
@@ -96,7 +98,9 @@ public class sym {
   "RIF",
   "RELSE",
   "RWHILE",
-  "REJECUTAR"
+  "REJECUTAR",
+  "RDO",
+  "RFOR"
   };
 }
 

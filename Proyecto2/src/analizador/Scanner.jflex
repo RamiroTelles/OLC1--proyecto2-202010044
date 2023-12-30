@@ -92,6 +92,20 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     return new Symbol(sym.RIF,yyline,yychar,yytext());
 }
 
+"para" {  
+    System.out.println("Reconocio for: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RFOR",yyline,yycolumn));
+
+    return new Symbol(sym.RFOR,yyline,yychar,yytext());
+}
+
+"hacer" {  
+    System.out.println("Reconocio do: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RDO",yyline,yycolumn));
+
+    return new Symbol(sym.RDO,yyline,yychar,yytext());
+}
+
 "ejecutar" {  
     System.out.println("Reconocio ejecutar: "+yytext());
     listaTokens.add(new elToken(yytext(),"REJECUTAR",yyline,yycolumn));

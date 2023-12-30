@@ -40,15 +40,15 @@ public class scanner implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final char [] ZZ_CMAP = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  7, 50, 50,  8,  0,  0, 
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  7, 51, 51,  8,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-     9, 34,  2,  0,  0, 47, 48,  3, 42, 43, 11, 44, 37, 45,  5, 10, 
-     4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0, 36, 35, 33, 12,  0, 
-     0, 24, 29, 21, 28, 19, 32,  6,  6, 16, 20,  6, 30, 26, 17, 18, 
-    27,  6, 25, 14, 23, 22, 31,  6,  6,  6,  6, 40,  0, 41, 46,  6, 
-     0, 24, 29, 21, 28, 19, 32,  6,  6, 16, 20,  6, 30, 26, 17, 18, 
-    27,  6, 25, 14, 23, 22, 31,  6,  6,  6,  6, 38, 49, 39,  0,  0, 
-     0,  0,  0,  0,  0, 50,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+     9, 35,  2,  0,  0, 48, 49,  3, 43, 44, 11, 45, 38, 46,  5, 10, 
+     4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  0, 37, 36, 34, 12,  0, 
+     0, 20, 30, 23, 29, 24, 33,  6, 22, 16, 25,  6, 31, 28, 17, 18, 
+    19,  6, 21, 14, 27, 26, 32,  6,  6,  6,  6, 41,  0, 42, 47,  6, 
+     0, 20, 30, 23, 29, 24, 33,  6, 22, 16, 25,  6, 31, 28, 17, 18, 
+    19,  6, 21, 14, 27, 26, 32,  6,  6,  6,  6, 39, 50, 40,  0,  0, 
+     0,  0,  0,  0,  0, 51,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
@@ -65,21 +65,21 @@ public class scanner implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\2\1\1\3\1\4\2\5\1\6"+
-    "\1\7\1\10\1\1\1\4\1\1\11\4\1\11\1\12"+
+    "\1\7\1\10\1\1\1\4\1\1\13\4\1\11\1\12"+
     "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
     "\1\23\1\24\1\25\1\26\1\27\2\1\1\0\1\30"+
-    "\2\0\1\2\1\0\1\31\2\32\1\0\5\4\1\0"+
+    "\2\0\1\2\1\0\1\31\2\32\1\0\7\4\1\0"+
     "\2\4\1\0\3\4\1\33\1\34\1\35\1\36\1\37"+
-    "\1\40\1\41\1\2\2\0\1\4\1\0\6\4\1\0"+
+    "\1\40\1\41\1\2\2\0\1\4\1\0\10\4\1\0"+
     "\2\4\1\0\1\4\1\0\2\4\1\0\2\42\1\0"+
-    "\5\4\1\43\1\0\2\4\1\0\1\4\2\44\1\0"+
-    "\1\4\1\0\5\4\1\0\1\4\1\45\1\0\1\4"+
-    "\2\46\1\0\1\4\1\47\2\4\1\50\1\0\1\4"+
-    "\1\0\1\4\1\0\3\4\1\0\1\4\2\51\2\52"+
-    "\1\53\1\54\2\55";
+    "\1\4\1\43\5\4\1\44\1\0\2\4\1\0\1\4"+
+    "\2\45\1\0\1\4\1\0\1\4\1\46\4\4\1\0"+
+    "\1\4\1\47\1\0\1\4\2\50\1\0\2\4\1\51"+
+    "\1\52\1\4\1\0\1\4\1\0\1\4\1\0\3\4"+
+    "\1\0\1\4\2\53\2\54\1\55\1\56\2\57";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[145];
+    int [] result = new int[154];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -104,28 +104,29 @@ public class scanner implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\63\0\146\0\231\0\314\0\377\0\u0132\0\63"+
-    "\0\146\0\u0165\0\63\0\u0198\0\u01cb\0\u01fe\0\u0231\0\u0264"+
-    "\0\u0297\0\u02ca\0\u02fd\0\u0330\0\u0363\0\u0396\0\u03c9\0\u03fc"+
-    "\0\u042f\0\u0462\0\u0495\0\63\0\63\0\63\0\63\0\63"+
-    "\0\63\0\63\0\63\0\63\0\63\0\63\0\63\0\u04c8"+
-    "\0\u04fb\0\231\0\63\0\u052e\0\u0561\0\u0594\0\u05c7\0\63"+
-    "\0\u05fa\0\u062d\0\u0660\0\u0693\0\u06c6\0\u06f9\0\u072c\0\u075f"+
-    "\0\u0792\0\u07c5\0\u07f8\0\u082b\0\u085e\0\u0891\0\u08c4\0\63"+
-    "\0\63\0\63\0\63\0\63\0\63\0\u0561\0\63\0\u08f7"+
-    "\0\u092a\0\u095d\0\u0990\0\u09c3\0\u09f6\0\u0a29\0\u0a5c\0\u0a8f"+
-    "\0\u0ac2\0\u0af5\0\u0b28\0\u0b5b\0\u0b8e\0\u0bc1\0\u0bf4\0\u0c27"+
-    "\0\u0c5a\0\u0c8d\0\63\0\u0132\0\u0cc0\0\u0cf3\0\u0d26\0\u0d59"+
-    "\0\u0d8c\0\u0dbf\0\u0132\0\u0df2\0\u0e25\0\u0e58\0\u0e8b\0\u0ebe"+
-    "\0\63\0\u0132\0\u0ef1\0\u0f24\0\u0f57\0\u0f8a\0\u0fbd\0\u0ff0"+
-    "\0\u1023\0\u1056\0\u1089\0\u10bc\0\u0132\0\u10ef\0\u1122\0\63"+
-    "\0\u0132\0\u1155\0\u1188\0\u0132\0\u11bb\0\u11ee\0\u0132\0\u1221"+
-    "\0\u1254\0\u1287\0\u12ba\0\u12ed\0\u1320\0\u1353\0\u1386\0\u13b9"+
-    "\0\u13ec\0\63\0\u0132\0\63\0\u0132\0\u0132\0\u0132\0\63"+
-    "\0\u0132";
+    "\0\0\0\64\0\150\0\234\0\320\0\u0104\0\u0138\0\64"+
+    "\0\150\0\u016c\0\64\0\u01a0\0\u01d4\0\u0208\0\u023c\0\u0270"+
+    "\0\u02a4\0\u02d8\0\u030c\0\u0340\0\u0374\0\u03a8\0\u03dc\0\u0410"+
+    "\0\u0444\0\u0478\0\u04ac\0\u04e0\0\u0514\0\64\0\64\0\64"+
+    "\0\64\0\64\0\64\0\64\0\64\0\64\0\64\0\64"+
+    "\0\64\0\u0548\0\u057c\0\234\0\64\0\u05b0\0\u05e4\0\u0618"+
+    "\0\u064c\0\64\0\u0680\0\u06b4\0\u06e8\0\u071c\0\u0750\0\u0784"+
+    "\0\u07b8\0\u07ec\0\u0820\0\u0854\0\u0888\0\u08bc\0\u08f0\0\u0924"+
+    "\0\u0958\0\u098c\0\u09c0\0\64\0\64\0\64\0\64\0\64"+
+    "\0\64\0\u05e4\0\64\0\u09f4\0\u0a28\0\u0a5c\0\u0a90\0\u0ac4"+
+    "\0\u0af8\0\u0b2c\0\u0b60\0\u0b94\0\u0bc8\0\u0bfc\0\u0c30\0\u0c64"+
+    "\0\u0c98\0\u0ccc\0\u0d00\0\u0d34\0\u0d68\0\u0d9c\0\u0dd0\0\u0e04"+
+    "\0\64\0\u0138\0\u0e38\0\u0e6c\0\u0138\0\u0ea0\0\u0ed4\0\u0f08"+
+    "\0\u0f3c\0\u0f70\0\u0138\0\u0fa4\0\u0fd8\0\u100c\0\u1040\0\u1074"+
+    "\0\64\0\u0138\0\u10a8\0\u10dc\0\u1110\0\u1144\0\u0138\0\u1178"+
+    "\0\u11ac\0\u11e0\0\u1214\0\u1248\0\u127c\0\u0138\0\u12b0\0\u12e4"+
+    "\0\64\0\u0138\0\u1318\0\u134c\0\u1380\0\u0138\0\u0138\0\u13b4"+
+    "\0\u13e8\0\u141c\0\u1450\0\u1484\0\u14b8\0\u14ec\0\u1520\0\u1554"+
+    "\0\u1588\0\u15bc\0\64\0\u0138\0\64\0\u0138\0\u0138\0\u0138"+
+    "\0\64\0\u0138";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[145];
+    int [] result = new int[154];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -150,98 +151,107 @@ public class scanner implements java_cup.runtime.Scanner {
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\2\1\3\1\4\1\5\1\6\1\2\1\7\1\10"+
     "\1\3\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
-    "\1\20\2\7\1\21\1\7\1\22\1\7\1\23\2\7"+
-    "\1\24\1\7\1\25\1\26\1\7\1\27\1\30\1\31"+
-    "\1\32\1\33\1\34\1\35\1\36\1\37\1\40\1\41"+
-    "\1\42\1\43\1\44\1\45\1\46\1\47\1\50\1\51"+
-    "\65\0\1\3\6\0\2\3\51\0\2\52\1\53\60\52"+
-    "\2\54\1\0\60\54\4\0\1\6\1\55\61\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\21\7\34\0\1\56"+
-    "\1\57\110\0\1\60\40\0\2\61\46\0\1\7\1\0"+
-    "\1\7\7\0\1\7\1\61\1\62\20\7\54\0\1\63"+
-    "\34\0\1\7\1\0\1\7\7\0\1\7\1\0\12\7"+
-    "\1\64\6\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\1\7\1\65\2\7\1\66\14\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\10\7\1\67\10\7"+
-    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\11\7"+
-    "\1\70\7\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\71\1\72\20\7\26\0\1\7\1\0\1\7\7\0"+
-    "\1\7\1\0\2\7\1\73\16\7\26\0\1\7\1\0"+
-    "\1\7\7\0\1\7\1\74\1\75\20\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\2\7\1\76\16\7"+
+    "\1\20\2\7\1\21\2\7\1\22\1\23\1\24\2\7"+
+    "\1\25\1\26\1\27\1\30\1\7\1\31\1\32\1\33"+
+    "\1\34\1\35\1\36\1\37\1\40\1\41\1\42\1\43"+
+    "\1\44\1\45\1\46\1\47\1\50\1\51\1\52\1\53"+
+    "\66\0\1\3\6\0\2\3\52\0\2\54\1\55\61\54"+
+    "\2\56\1\0\61\56\4\0\1\6\1\57\62\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\22\7\34\0\1\60"+
+    "\1\61\112\0\1\62\40\0\2\63\47\0\1\7\1\0"+
+    "\1\7\7\0\1\7\1\63\1\64\21\7\56\0\1\65"+
+    "\33\0\1\7\1\0\1\7\7\0\1\7\1\0\14\7"+
+    "\1\66\5\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\4\7\1\67\15\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\4\7\1\70\15\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\4\7\1\71\15\7"+
+    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\1\7"+
+    "\1\72\7\7\1\73\10\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\5\7\1\74\14\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\75\1\76\21\7\26\0"+
+    "\1\7\1\0\1\7\7\0\1\7\1\0\2\7\1\77"+
+    "\17\7\26\0\1\7\1\0\1\7\7\0\1\7\1\100"+
+    "\1\101\21\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\2\7\1\102\17\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\4\7\1\103\15\7\64\0\1\104"+
+    "\63\0\1\105\63\0\1\106\102\0\1\107\64\0\1\110"+
+    "\4\0\1\111\64\0\1\112\57\0\7\60\1\113\1\0"+
+    "\53\60\12\61\1\0\1\114\50\61\21\0\1\115\46\0"+
+    "\1\7\1\0\1\7\7\0\1\7\1\0\1\7\1\116"+
+    "\20\7\45\0\1\117\44\0\1\7\1\0\1\7\7\0"+
+    "\1\7\1\0\3\7\1\120\16\7\26\0\1\7\1\0"+
+    "\1\7\7\0\1\7\1\0\5\7\1\121\14\7\26\0"+
+    "\1\7\1\0\1\7\7\0\1\7\1\0\7\7\1\122"+
+    "\12\7\26\0\1\7\1\0\1\7\7\0\1\7\1\0"+
+    "\5\7\1\123\7\7\1\124\4\7\26\0\1\7\1\0"+
+    "\1\7\7\0\1\7\1\0\13\7\1\125\6\7\26\0"+
+    "\1\7\1\0\1\7\7\0\1\7\1\0\10\7\1\126"+
+    "\11\7\26\0\1\7\1\0\1\7\7\0\1\7\1\0"+
+    "\12\7\1\127\7\7\52\0\1\130\37\0\1\7\1\0"+
+    "\1\7\7\0\1\7\1\0\10\7\1\131\11\7\26\0"+
+    "\1\7\1\0\1\7\7\0\1\7\1\0\16\7\1\132"+
+    "\3\7\43\0\1\133\46\0\1\7\1\0\1\7\7\0"+
+    "\1\7\1\0\1\7\1\134\20\7\26\0\1\7\1\0"+
+    "\1\7\7\0\1\7\1\135\1\136\21\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\17\7\1\137\2\7"+
+    "\34\0\1\140\73\0\1\141\45\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\2\7\1\142\17\7\47\0\1\143"+
+    "\42\0\1\7\1\0\1\7\7\0\1\7\1\0\5\7"+
+    "\1\144\14\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\4\7\1\145\15\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\10\7\1\146\11\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\4\7\1\147\15\7"+
     "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\10\7"+
-    "\1\77\10\7\63\0\1\100\62\0\1\101\62\0\1\102"+
-    "\101\0\1\103\63\0\1\104\4\0\1\105\63\0\1\106"+
-    "\56\0\7\56\1\107\1\0\52\56\12\57\1\0\1\110"+
-    "\47\57\21\0\1\111\45\0\1\7\1\0\1\7\7\0"+
-    "\1\7\1\0\1\7\1\112\17\7\55\0\1\113\33\0"+
-    "\1\7\1\0\1\7\7\0\1\7\1\0\13\7\1\114"+
-    "\5\7\26\0\1\7\1\0\1\7\7\0\1\7\1\0"+
-    "\7\7\1\115\11\7\26\0\1\7\1\0\1\7\7\0"+
-    "\1\7\1\0\3\7\1\116\15\7\26\0\1\7\1\0"+
-    "\1\7\7\0\1\7\1\0\11\7\1\117\2\7\1\120"+
-    "\4\7\26\0\1\7\1\0\1\7\7\0\1\7\1\0"+
-    "\6\7\1\121\12\7\45\0\1\122\43\0\1\7\1\0"+
-    "\1\7\7\0\1\7\1\0\3\7\1\123\15\7\26\0"+
-    "\1\7\1\0\1\7\7\0\1\7\1\0\15\7\1\124"+
-    "\3\7\43\0\1\125\45\0\1\7\1\0\1\7\7\0"+
-    "\1\7\1\0\1\7\1\126\17\7\26\0\1\7\1\0"+
-    "\1\7\7\0\1\7\1\127\1\130\20\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\16\7\1\131\2\7"+
-    "\34\0\1\132\72\0\1\133\44\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\2\7\1\134\16\7\53\0\1\135"+
-    "\35\0\1\7\1\0\1\7\7\0\1\7\1\0\11\7"+
-    "\1\136\7\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\3\7\1\137\15\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\5\7\1\140\13\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\10\7\1\141\10\7"+
-    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\3\7"+
-    "\1\142\15\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\3\7\1\143\15\7\43\0\1\144\45\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\1\7\1\145\17\7"+
-    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\16\7"+
-    "\1\146\2\7\52\0\1\147\36\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\10\7\1\150\10\7\56\0\1\151"+
-    "\32\0\1\7\1\0\1\7\7\0\1\7\1\0\14\7"+
-    "\1\152\4\7\26\0\1\7\1\0\1\7\6\0\1\153"+
-    "\1\154\1\0\21\7\36\0\1\107\65\0\2\155\46\0"+
-    "\1\7\1\0\1\7\7\0\1\7\1\155\1\156\20\7"+
-    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\11\7"+
-    "\1\157\7\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\6\7\1\160\12\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\5\7\1\161\13\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\1\7\1\162\17\7"+
-    "\51\0\1\163\37\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\7\7\1\164\11\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\3\7\1\165\15\7\53\0\1\166"+
-    "\35\0\1\7\1\0\1\7\7\0\1\7\1\0\11\7"+
-    "\1\167\7\7\45\0\1\170\43\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\3\7\1\171\15\7\54\0\1\172"+
-    "\34\0\1\7\1\0\1\7\7\0\1\7\1\0\12\7"+
-    "\1\173\6\7\26\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\2\7\1\174\16\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\7\7\1\175\11\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\7\7\1\176\11\7"+
-    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\10\7"+
-    "\1\177\10\7\53\0\1\200\35\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\11\7\1\201\7\7\41\0\2\202"+
-    "\46\0\1\7\1\0\1\7\7\0\1\7\1\202\1\203"+
-    "\20\7\41\0\2\204\46\0\1\7\1\0\1\7\7\0"+
-    "\1\7\1\204\1\205\20\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\10\7\1\206\10\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\3\7\1\207\15\7"+
-    "\52\0\1\210\36\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\10\7\1\211\10\7\44\0\1\212\44\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\2\7\1\213\16\7"+
-    "\53\0\1\214\35\0\1\7\1\0\1\7\7\0\1\7"+
-    "\1\0\11\7\1\215\7\7\26\0\1\7\1\0\1\7"+
-    "\7\0\1\7\1\0\11\7\1\216\7\7\26\0\1\7"+
-    "\1\0\1\7\7\0\1\7\1\0\11\7\1\217\7\7"+
-    "\37\0\2\220\50\0\1\7\1\0\1\7\6\0\1\220"+
-    "\1\221\1\0\21\7\22\0";
+    "\1\150\11\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\10\7\1\151\11\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\7\7\1\152\12\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\10\7\1\153\11\7"+
+    "\43\0\1\154\46\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\1\7\1\155\20\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\17\7\1\156\2\7\46\0\1\157"+
+    "\43\0\1\7\1\0\1\7\7\0\1\7\1\0\4\7"+
+    "\1\160\15\7\57\0\1\161\32\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\15\7\1\162\4\7\26\0\1\7"+
+    "\1\0\1\7\6\0\1\163\1\164\1\0\22\7\36\0"+
+    "\1\113\66\0\2\165\47\0\1\7\1\0\1\7\7\0"+
+    "\1\7\1\165\1\166\21\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\5\7\1\167\14\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\7\7\1\170\12\7"+
+    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\1\7"+
+    "\1\171\20\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\5\7\1\172\14\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\12\7\1\173\7\7\55\0\1\174"+
+    "\34\0\1\7\1\0\1\7\7\0\1\7\1\0\13\7"+
+    "\1\175\6\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\10\7\1\176\11\7\47\0\1\177\42\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\5\7\1\200\14\7"+
+    "\52\0\1\201\37\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\10\7\1\202\11\7\56\0\1\203\33\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\14\7\1\204\5\7"+
+    "\26\0\1\7\1\0\1\7\7\0\1\7\1\0\13\7"+
+    "\1\205\6\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\4\7\1\206\15\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\2\7\1\207\17\7\26\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\0\13\7\1\210\6\7"+
+    "\47\0\1\211\42\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\5\7\1\212\14\7\41\0\2\213\47\0\1\7"+
+    "\1\0\1\7\7\0\1\7\1\213\1\214\21\7\41\0"+
+    "\2\215\47\0\1\7\1\0\1\7\7\0\1\7\1\215"+
+    "\1\216\21\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\10\7\1\217\11\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\4\7\1\220\15\7\46\0\1\221"+
+    "\43\0\1\7\1\0\1\7\7\0\1\7\1\0\4\7"+
+    "\1\222\15\7\44\0\1\223\45\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\2\7\1\224\17\7\47\0\1\225"+
+    "\42\0\1\7\1\0\1\7\7\0\1\7\1\0\5\7"+
+    "\1\226\14\7\26\0\1\7\1\0\1\7\7\0\1\7"+
+    "\1\0\5\7\1\227\14\7\26\0\1\7\1\0\1\7"+
+    "\7\0\1\7\1\0\5\7\1\230\14\7\37\0\2\231"+
+    "\51\0\1\7\1\0\1\7\6\0\1\231\1\232\1\0"+
+    "\22\7\22\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[5151];
+    int [] result = new int[5616];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -279,18 +289,18 @@ public class scanner implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\1\11\5\1\1\11\2\1\1\11\20\1\14\11"+
+    "\1\0\1\11\5\1\1\11\2\1\1\11\22\1\14\11"+
     "\2\1\1\0\1\11\2\0\1\1\1\0\1\11\2\1"+
-    "\1\0\5\1\1\0\2\1\1\0\3\1\6\11\1\1"+
-    "\1\11\2\0\1\1\1\0\6\1\1\0\2\1\1\0"+
-    "\1\1\1\0\2\1\1\0\1\11\1\1\1\0\6\1"+
+    "\1\0\7\1\1\0\2\1\1\0\3\1\6\11\1\1"+
+    "\1\11\2\0\1\1\1\0\10\1\1\0\2\1\1\0"+
+    "\1\1\1\0\2\1\1\0\1\11\1\1\1\0\10\1"+
     "\1\0\2\1\1\0\1\1\1\11\1\1\1\0\1\1"+
-    "\1\0\5\1\1\0\2\1\1\0\1\1\1\11\1\1"+
+    "\1\0\6\1\1\0\2\1\1\0\1\1\1\11\1\1"+
     "\1\0\5\1\1\0\1\1\1\0\1\1\1\0\3\1"+
     "\1\0\1\1\1\11\1\1\1\11\3\1\1\11\1\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[145];
+    int [] result = new int[154];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -764,12 +774,12 @@ public class scanner implements java_cup.runtime.Scanner {
     listaErrores.add(new fallos(yytext(),"Error Lexico",yyline,yycolumn));
             } 
             // fall through
-          case 46: break;
+          case 48: break;
           case 2: 
             { 
             } 
             // fall through
-          case 47: break;
+          case 49: break;
           case 3: 
             { System.out.println("Reconocio Entero: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"ENTERO",yyline,yycolumn));
@@ -777,7 +787,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.INT,yyline,yychar, yytext());
             } 
             // fall through
-          case 48: break;
+          case 50: break;
           case 4: 
             { System.out.println("Reconocio ID: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"ID",yyline,yycolumn));
@@ -785,12 +795,12 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.ID,yyline,yychar, yytext());
             } 
             // fall through
-          case 49: break;
+          case 51: break;
           case 5: 
             { yychar=1;
             } 
             // fall through
-          case 50: break;
+          case 52: break;
           case 6: 
             { System.out.println("Reconocio "+yytext()+" /"); 
     listaTokens.add(new elToken(yytext(),"DIV",yyline,yycolumn));
@@ -798,7 +808,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.DIV,yyline,yychar, yytext());
             } 
             // fall through
-          case 51: break;
+          case 53: break;
           case 7: 
             { System.out.println("Reconocio "+yytext()+" *"); 
     listaTokens.add(new elToken(yytext(),"POR",yyline,yycolumn));
@@ -806,7 +816,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.POR,yyline,yychar, yytext());
             } 
             // fall through
-          case 52: break;
+          case 54: break;
           case 8: 
             { System.out.println("Reconocio "+yytext()+" >"); 
     listaTokens.add(new elToken(yytext(),"MAYOR",yyline,yycolumn));
@@ -814,7 +824,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MAYOR,yyline,yychar, yytext());
             } 
             // fall through
-          case 53: break;
+          case 55: break;
           case 9: 
             { System.out.println("Reconocio "+yytext()+" ="); 
     listaTokens.add(new elToken(yytext(),"IGUAL",yyline,yycolumn));
@@ -822,7 +832,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.IGUAL,yyline,yychar, yytext());
             } 
             // fall through
-          case 54: break;
+          case 56: break;
           case 10: 
             { System.out.println("Reconocio "+yytext()+" !"); 
     listaTokens.add(new elToken(yytext(),"NOT",yyline,yycolumn));
@@ -830,7 +840,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.NOT,yyline,yychar, yytext());
             } 
             // fall through
-          case 55: break;
+          case 57: break;
           case 11: 
             { System.out.println("Reconocio "+yytext()+" <"); 
     listaTokens.add(new elToken(yytext(),"MENOR",yyline,yycolumn));
@@ -838,7 +848,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MENOR,yyline,yychar, yytext());
             } 
             // fall through
-          case 56: break;
+          case 58: break;
           case 12: 
             { System.out.println("Reconocio "+yytext()+" punto y coma"); 
         listaTokens.add(new elToken(yytext(),"PUNTOCOMA",yyline,yycolumn));
@@ -846,7 +856,7 @@ public class scanner implements java_cup.runtime.Scanner {
         return new Symbol(sym.PUNTOCOMA,yyline,yychar, yytext());
             } 
             // fall through
-          case 57: break;
+          case 59: break;
           case 13: 
             { System.out.println("Reconocio "+yytext()+" , coma"); 
         listaTokens.add(new elToken(yytext(),"COMA",yyline,yycolumn));
@@ -854,35 +864,35 @@ public class scanner implements java_cup.runtime.Scanner {
         return new Symbol(sym.COMA ,yyline,yychar, yytext());
             } 
             // fall through
-          case 58: break;
+          case 60: break;
           case 14: 
             { System.out.println("Reconocio "+yytext()+" {"); 
     listaTokens.add(new elToken(yytext(),"LL_IZQ",yyline,yycolumn));
     return new Symbol(sym.LL_IZQ,yyline,yychar, yytext());
             } 
             // fall through
-          case 59: break;
+          case 61: break;
           case 15: 
             { System.out.println("Reconocio "+yytext()+" }"); 
     listaTokens.add(new elToken(yytext(),"LL_DER",yyline,yycolumn));
     return new Symbol(sym.LL_DER,yyline,yychar, yytext());
             } 
             // fall through
-          case 60: break;
+          case 62: break;
           case 16: 
             { System.out.println("Reconocio "+yytext()+" ["); 
     listaTokens.add(new elToken(yytext(),"COR_IZQ",yyline,yycolumn));
     return new Symbol(sym.COR_IZQ,yyline,yychar, yytext());
             } 
             // fall through
-          case 61: break;
+          case 63: break;
           case 17: 
             { System.out.println("Reconocio "+yytext()+" ]"); 
     listaTokens.add(new elToken(yytext(),"COR_DER",yyline,yycolumn));
     return new Symbol(sym.COR_DER,yyline,yychar, yytext());
             } 
             // fall through
-          case 62: break;
+          case 64: break;
           case 18: 
             { System.out.println("Reconocio "+yytext()+" ("); 
     listaTokens.add(new elToken(yytext(),"PAR_IZQ",yyline,yycolumn));
@@ -890,7 +900,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.PAR_IZQ,yyline,yychar, yytext());
             } 
             // fall through
-          case 63: break;
+          case 65: break;
           case 19: 
             { System.out.println("Reconocio "+yytext()+" )"); 
     listaTokens.add(new elToken(yytext(),"PAR_DER",yyline,yycolumn));
@@ -898,7 +908,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.PAR_DER,yyline,yychar, yytext());
             } 
             // fall through
-          case 64: break;
+          case 66: break;
           case 20: 
             { System.out.println("Reconocio "+yytext()+" +"); 
     listaTokens.add(new elToken(yytext(),"MAS",yyline,yycolumn));
@@ -906,7 +916,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MAS,yyline,yychar, yytext());
             } 
             // fall through
-          case 65: break;
+          case 67: break;
           case 21: 
             { System.out.println("Reconocio "+yytext()+" -"); 
     listaTokens.add(new elToken(yytext(),"MENOS",yyline,yycolumn));
@@ -914,7 +924,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MENOS,yyline,yychar, yytext());
             } 
             // fall through
-          case 66: break;
+          case 68: break;
           case 22: 
             { System.out.println("Reconocio "+yytext()+" ^"); 
     listaTokens.add(new elToken(yytext(),"potencia",yyline,yycolumn));
@@ -922,7 +932,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.POTENCIA,yyline,yychar, yytext());
             } 
             // fall through
-          case 67: break;
+          case 69: break;
           case 23: 
             { System.out.println("Reconocio "+yytext()+" %"); 
     listaTokens.add(new elToken(yytext(),"MODULO",yyline,yycolumn));
@@ -930,7 +940,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MODULO,yyline,yychar, yytext());
             } 
             // fall through
-          case 68: break;
+          case 70: break;
           case 24: 
             { System.out.println("Reconocio Cadena: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"STRING",yyline,yycolumn));
@@ -938,7 +948,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.STRING,yyline,yychar, yytext());
             } 
             // fall through
-          case 69: break;
+          case 71: break;
           case 25: 
             { System.out.println("Reconocio "+yytext()+" >="); 
     listaTokens.add(new elToken(yytext(),"MAYORIGUAL",yyline,yycolumn));
@@ -946,7 +956,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MAYORIGUAL,yyline,yychar, yytext());
             } 
             // fall through
-          case 70: break;
+          case 72: break;
           case 26: 
             { System.out.println("Reconocio if: "+yytext());
     listaTokens.add(new elToken(yytext(),"RIF",yyline,yycolumn));
@@ -954,7 +964,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.RIF,yyline,yychar,yytext());
             } 
             // fall through
-          case 71: break;
+          case 73: break;
           case 27: 
             { System.out.println("Reconocio "+yytext()+" =="); 
     listaTokens.add(new elToken(yytext(),"EQUIVALENTE",yyline,yycolumn));
@@ -962,14 +972,14 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.EQUIVALENTE,yyline,yychar, yytext());
             } 
             // fall through
-          case 72: break;
+          case 74: break;
           case 28: 
             { System.out.println("Reconocio "+yytext()+" !="); 
     listaTokens.add(new elToken(yytext(),"DISTINTO",yyline,yycolumn));
     return new Symbol(sym.DISTINTO,yyline,yychar, yytext());
             } 
             // fall through
-          case 73: break;
+          case 75: break;
           case 29: 
             { System.out.println("Reconocio "+yytext()+" <="); 
     listaTokens.add(new elToken(yytext(),"MENORIGUAL",yyline,yycolumn));
@@ -977,7 +987,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.MENORIGUAL,yyline,yychar, yytext());
             } 
             // fall through
-          case 74: break;
+          case 76: break;
           case 30: 
             { System.out.println("Reconocio "+yytext()+" &&"); 
     listaTokens.add(new elToken(yytext(),"AND",yyline,yycolumn));
@@ -985,7 +995,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.AND,yyline,yychar, yytext());
             } 
             // fall through
-          case 75: break;
+          case 77: break;
           case 31: 
             { System.out.println("Reconocio "+yytext()+" ||"); 
     listaTokens.add(new elToken(yytext(),"OR",yyline,yycolumn));
@@ -993,7 +1003,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.OR,yyline,yychar, yytext());
             } 
             // fall through
-          case 76: break;
+          case 78: break;
           case 32: 
             { System.out.println("Reconocio caracter: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"TCHAR",yyline,yycolumn));
@@ -1001,7 +1011,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.TCHAR,yyline,yychar, yytext());
             } 
             // fall through
-          case 77: break;
+          case 79: break;
           case 33: 
             { System.out.println("Reconocio Decimal: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"DECIMAL",yyline,yycolumn));
@@ -1009,7 +1019,7 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.DECIMAL,yyline,yychar, yytext());
             } 
             // fall through
-          case 78: break;
+          case 80: break;
           case 34: 
             { System.out.println("Reconocio else: "+yytext());
     listaTokens.add(new elToken(yytext(),"RELSE",yyline,yycolumn));
@@ -1017,90 +1027,106 @@ public class scanner implements java_cup.runtime.Scanner {
     return new Symbol(sym.RELSE,yyline,yychar,yytext());
             } 
             // fall through
-          case 79: break;
+          case 81: break;
           case 35: 
+            { System.out.println("Reconocio for: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RFOR",yyline,yycolumn));
+
+    return new Symbol(sym.RFOR,yyline,yychar,yytext());
+            } 
+            // fall through
+          case 82: break;
+          case 36: 
             { System.out.println("Reconocio true: "+yytext());
     listaTokens.add(new elToken(yytext(),"RTRUE",yyline,yycolumn));
     
     return new Symbol(sym.RTRUE,yyline,yychar,yytext());
             } 
             // fall through
-          case 80: break;
-          case 36: 
+          case 83: break;
+          case 37: 
             { System.out.println("Reconocio void: "+yytext());
     listaTokens.add(new elToken(yytext(),"RVOID",yyline,yycolumn)); 
     return new Symbol(sym.RVOID,yyline,yychar,yytext());
             } 
             // fall through
-          case 81: break;
-          case 37: 
+          case 84: break;
+          case 38: 
+            { System.out.println("Reconocio do: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RDO",yyline,yycolumn));
+
+    return new Symbol(sym.RDO,yyline,yychar,yytext());
+            } 
+            // fall through
+          case 85: break;
+          case 39: 
             { System.out.println("Reconocio double: "+yytext()); 
     listaTokens.add(new elToken(yytext(),"RDOUBLE",yyline,yycolumn));
     return new Symbol(sym.RDOUBLE,yyline,yychar,yytext());
             } 
             // fall through
-          case 82: break;
-          case 38: 
+          case 86: break;
+          case 40: 
             { System.out.println("Reconocio false: "+yytext());
     listaTokens.add(new elToken(yytext(),"RFALSE",yyline,yycolumn));
     
     return new Symbol(sym.RFALSE,yyline,yychar,yytext());
             } 
             // fall through
-          case 83: break;
-          case 39: 
-            { System.out.println("Reconocio int: "+yytext());
-    listaTokens.add(new elToken(yytext(),"RINT",yyline,yycolumn)); 
-    return new Symbol(sym.RINT,yyline,yychar,yytext());
-            } 
-            // fall through
-          case 84: break;
-          case 40: 
+          case 87: break;
+          case 41: 
             { System.out.println("Reconocio string: "+yytext());
     listaTokens.add(new elToken(yytext(),"RSTRING",yyline,yycolumn));
 
     return new Symbol(sym.RSTRING,yyline,yychar,yytext());
             } 
             // fall through
-          case 85: break;
-          case 41: 
+          case 88: break;
+          case 42: 
+            { System.out.println("Reconocio int: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RINT",yyline,yycolumn)); 
+    return new Symbol(sym.RINT,yyline,yychar,yytext());
+            } 
+            // fall through
+          case 89: break;
+          case 43: 
             { System.out.println("Reconocio bool: "+yytext());
     listaTokens.add(new elToken(yytext(),"RBOOL",yyline,yycolumn)); 
     return new Symbol(sym.RBOOL,yyline,yychar,yytext());
             } 
             // fall through
-          case 86: break;
-          case 42: 
+          case 90: break;
+          case 44: 
             { System.out.println("Reconocio imprimir: "+yytext());
     listaTokens.add(new elToken(yytext(),"RIMPRIMIR",yyline,yycolumn));
 
     return new Symbol(sym.RIMPRIMIR,yyline,yychar,yytext());
             } 
             // fall through
-          case 87: break;
-          case 43: 
+          case 91: break;
+          case 45: 
+            { System.out.println("Reconocio char: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RCHAR",yyline,yycolumn)); 
+    return new Symbol(sym.RCHAR,yyline,yychar,yytext());
+            } 
+            // fall through
+          case 92: break;
+          case 46: 
             { System.out.println("Reconocio ejecutar: "+yytext());
     listaTokens.add(new elToken(yytext(),"REJECUTAR",yyline,yycolumn));
 
     return new Symbol(sym.REJECUTAR,yyline,yychar,yytext());
             } 
             // fall through
-          case 88: break;
-          case 44: 
-            { System.out.println("Reconocio char: "+yytext());
-    listaTokens.add(new elToken(yytext(),"RCHAR",yyline,yycolumn)); 
-    return new Symbol(sym.RCHAR,yyline,yychar,yytext());
-            } 
-            // fall through
-          case 89: break;
-          case 45: 
+          case 93: break;
+          case 47: 
             { System.out.println("Reconocio while: "+yytext());
     listaTokens.add(new elToken(yytext(),"RWHILE",yyline,yycolumn));
 
     return new Symbol(sym.RWHILE,yyline,yychar,yytext());
             } 
             // fall through
-          case 90: break;
+          case 94: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
