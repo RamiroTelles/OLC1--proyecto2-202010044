@@ -39,7 +39,7 @@ terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE,RVOID;
-terminal String RIMPRIMIR,RIF,RELSE,RWHILE;
+terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR;
 
 
 
@@ -90,7 +90,8 @@ non terminal arbol senWhile;
 
 non terminal arbol lf1,lparam,lparam1;
 
-non terminal arbol llamadaFM,lenviarParam,lenviarParam1;
+non terminal arbol llamadaFM,lenviarParam,lenviarParam1,callFunc;
+
 
 
 
@@ -148,52 +149,63 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                 instruccion.añadirHijo(v1);
                 RESULT=instruccion;
         :}
+        |callFunc:v1 PUNTOCOMA:puntocoma{: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                instruccion.añadirHijo(new arbol(puntocoma));
+                RESULT=instruccion;
+        :}
 ;
 
-llamadaFM::= ID:id PAR_IZQ:parI lenviarParam:parametros {: arbol llamadaFM = new arbol("llamadaFM");
+llamadaFM::= REJECUTAR:ejecutar ID:id PAR_IZQ:parI lenviarParam:parametros PUNTOCOMA:puntocoma {: arbol llamadaFM = new arbol("llamadaFM");
+
+                llamadaFM.añadirHijo(new arbol(ejecutar));
                 llamadaFM.añadirHijo(new arbol(id));
                 llamadaFM.añadirHijo(new arbol(parI));
                 llamadaFM.añadirHijo(parametros);
+                llamadaFM.añadirHijo(new arbol(puntocoma));
                 RESULT=llamadaFM;
         :}
 ;
 
-lenviarParam::= lenviarParam1:v1 PAR_DER:parD PUNTOCOMA:puntocoma {: arbol lenviarParam = new arbol("lenviarParam");
+lenviarParam::= lenviarParam1:v1 PAR_DER:parD  {: arbol lenviarParam = new arbol("lenviarParam");
                 
                 lenviarParam.añadirHijo(v1);
                 lenviarParam.añadirHijo(new arbol(parD));
-                lenviarParam.añadirHijo(new arbol(puntocoma));
+               
                 
                 RESULT=lenviarParam;
                 :}
-                |PAR_DER:parD PUNTOCOMA:puntocoma {: arbol lenviarParam = new arbol("lenviarParam");
+                |PAR_DER:parD {: arbol lenviarParam = new arbol("lenviarParam");
                 
                 
                 lenviarParam.añadirHijo(new arbol(parD));
-                lenviarParam.añadirHijo(new arbol(puntocoma));
+                
                 
                 RESULT=lenviarParam;
         :}
+                
 ;
 
-lenviarParam1::= lenviarParam1:parametros COMA:coma ID:id {: 
+
+
+lenviarParam1::= lenviarParam1:parametros COMA:coma expLog:v1 {: 
                 
                 arbol lenviarParam1 = new arbol("lenviarParam1");
 
                 lenviarParam1.añadirHijo(parametros);
                 lenviarParam1.añadirHijo(new arbol(coma));
                 
-                lenviarParam1.añadirHijo(new arbol(id));
+                lenviarParam1.añadirHijo(v1);
                
 
                 RESULT= lenviarParam1;
                 :}
-                |ID:id {: 
+                |expLog:v1 {: 
                 
                 arbol lenviarParam1 = new arbol("lenviarParam1");
 
                 
-                lenviarParam1.añadirHijo(new arbol(id));
+                lenviarParam1.añadirHijo(v1);
                
 
                 RESULT= lenviarParam1;
@@ -745,6 +757,21 @@ valor ::= STRING:v1 {: arbol valor = new arbol("valor");
                         valor.añadirHijo(new arbol(v1));
                 RESULT=valor;
                 :}
+        |callFunc:v1 {: arbol valor = new arbol("valor");
+                        valor.añadirHijo(v1);
+                RESULT=valor;
+                :}
+;
+
+callFunc::= ID:id PAR_IZQ:parI lenviarParam:parametros {: arbol callFunc = new arbol("callFunc");
+
+               
+                callFunc.añadirHijo(new arbol(id));
+                callFunc.añadirHijo(new arbol(parI));
+                callFunc.añadirHijo(parametros);
+                RESULT=callFunc;
+        :}
+
 ;
 
 datoArray::= datoArray:v1 COMA:v2 valor1:v3 {: arbol datoArray = new arbol("datoArray");

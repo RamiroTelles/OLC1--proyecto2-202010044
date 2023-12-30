@@ -47,6 +47,7 @@ public class sym {
   public static final int COR_IZQ = 2;
   public static final int STRING = 27;
   public static final int RINT = 33;
+  public static final int REJECUTAR = 43;
   public static final int RBOOL = 35;
   public static final int RIF = 40;
   public static final int EQUIVALENTE = 21;
@@ -94,7 +95,8 @@ public class sym {
   "RIMPRIMIR",
   "RIF",
   "RELSE",
-  "RWHILE"
+  "RWHILE",
+  "REJECUTAR"
   };
 }
 
