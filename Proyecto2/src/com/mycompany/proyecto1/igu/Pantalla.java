@@ -54,6 +54,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     private String nombreArchivo ="";
     private int cantTabJson=0;
     private String consola="";
+    
+    private ArrayList<String> pilaPertenece= new ArrayList();
+    private String entornoEjecucion="global";
 
    
     public Pantalla() {
@@ -65,6 +68,10 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         jMenuItem4.addActionListener(this);
         
         
+    }
+    
+    private void reiniciar(){
+        pilaPertenece.removeAll(pilaPertenece);
     }
     
     private void imprimirConsolaLn(String txt){
@@ -191,12 +198,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
             
+            pilaPertenece.add("main");
             
             run(resultado,TS);
             
-            System.out.println("uwu");
+            //System.out.println("uwu");
             for(tablaJson elemento : TS) {
-			System.out.println(elemento.getId()+"\t"+elemento.getRol()+"\t"+elemento.getTipo()+"\t"+elemento.getValor());
+			System.out.println(elemento.getId()+"\t"+elemento.getRol()+"\t"+elemento.getTipo()+"\t"+elemento.getValor()+ "\t"+elemento.getEntorno() + "\t" + elemento.getPertenece());
             }
             
             
@@ -493,19 +501,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 switch(String.valueOf( raiz.obtenerHijo(0).getResult())){
                     
                     case "cadena":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",""));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),""));
                         break;
                     case "caracter":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",'0'));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),'0'));
                         break;
                     case "binario":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),1));
                         break;
                     case "doble":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",0.0));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0.0));
                         break;
                     case "entero":
-                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",0));
+                        TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0));
                         break;
                     case "void":
                         imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
@@ -518,7 +526,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                     
                         case "cadena":
                             if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\"'){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),String.valueOf(raiz.obtenerHijo(2).getResult())));
                             }else{
                                 imprimirConsolaLn("Error Semantico");
                             }
@@ -526,7 +534,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             break;
                         case "caracter":
                             if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\''){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),String.valueOf(raiz.obtenerHijo(2).getResult())));
                             }else{
                                 imprimirConsolaLn("Error Semantico");
                             }
@@ -534,23 +542,23 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         case "binario":
                             
                             if( String.valueOf( raiz.obtenerHijo(2).getResult()).equals("1") ){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),1));
                             }else if(String.valueOf( raiz.obtenerHijo(2).getResult()).equals("0")){
-                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",0));
+                                TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0));
                             }else{
                                 imprimirConsolaLn("Error Semantico");
                             }
                             
                             break;
                         case "doble":
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
                             break;
                         case "entero":
                             
                             
                             double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
                             int r2 = (int)r1;
-                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
+                            TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),r2));
                             break;
                         case "void":
                             imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
@@ -571,7 +579,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("=") ){// asignacion -> id = expLog 
             
             for(tablaJson elemento: TS){
-                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase()))){
+                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase())) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
                     try{
                         switch(elemento.getTipo()){
 
@@ -636,7 +644,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
            
         }else if(raiz.getLex().equals("valorId") && raiz.getHijos().size()==1){// valor -> ID
             for(tablaJson elemento: TS){
-                if(raiz.obtenerHijo(0).getLex().equalsIgnoreCase(elemento.getId())){
+                if(raiz.obtenerHijo(0).getLex().equalsIgnoreCase(elemento.getId()) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
                     
                     raiz.setResult(elemento.getValor());
                     return;
@@ -684,7 +692,15 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             //metodo con parametros
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","string","global","main","",raiz.obtenerHijo(3).obtenerHijo(3)));
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
+                            
+                            
                         }
                         
                         break;
@@ -698,7 +714,14 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             //metodo con parametros
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","char","global","main",'0',raiz.obtenerHijo(3).obtenerHijo(3)));
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
+                            
                         }
                         
                         break;
@@ -712,7 +735,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             //metodo con parametros
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1,raiz.obtenerHijo(3).obtenerHijo(3)));
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
                         }
                         //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","bool","global","main",1));
                         break;
@@ -725,7 +754,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             //metodo con parametros
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0,raiz.obtenerHijo(3).obtenerHijo(3)));
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
                         }
                         
                         //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","double","global","main",0.0));
@@ -739,7 +774,13 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             //metodo con parametros
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0,raiz.obtenerHijo(3).obtenerHijo(3)));
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
                         }
                         
                         //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","int","global","main",0));
@@ -754,16 +795,22 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null,raiz.obtenerHijo(3).obtenerHijo(3)));
                             
                             //guardar después sus parametros en TS
+                            pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                            entornoEjecucion = "local";
                             agregarParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS);
+                            pilaPertenece.remove(pilaPertenece.size()-1);
+                            if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                                entornoEjecucion = "global";
+                            }
                         }
                         //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"metodo","void","global","main",null));
                         break;
                         
                 }
             
-                if(raiz.obtenerHijo(3).getHijos().size()==5){ // && si lParam -> lParam1 ) { instrucciones }
-                    
-                }
+//                if(raiz.obtenerHijo(3).getHijos().size()==5){ // && si lParam -> lParam1 ) { instrucciones }
+//                    
+//                }
             
             
         }else if(raiz.getLex().equals("llamadaFM") ){// llamadaFM -> ejecutar id ( lenviarParam ;
@@ -771,10 +818,17 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             if(raiz.obtenerHijo(3).getHijos().size()==2){ //&& si lenviarParam-> lenviarParam1 )
                 for(tablaJson elem: TS){
                     if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(1).getLex())){
+                        //cambiar entorno y pertenece
+                        pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                        entornoEjecucion="local";
                         agregarValorParametros(raiz.obtenerHijo(3).obtenerHijo(0),TS,1,raiz.obtenerHijo(1).getLex());
                         elem.getInstrucciones().setAct(true);
                         run(elem.getInstrucciones(),TS);
                         elem.getInstrucciones().setAct(false);
+                        pilaPertenece.remove(pilaPertenece.size()-1);
+                        if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                            entornoEjecucion="global";
+                        }
                         return;
                     }
                 
@@ -785,9 +839,17 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                 for(tablaJson elem: TS){
                     if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(1).getLex())){
+                        pilaPertenece.add(raiz.obtenerHijo(1).getLex().toLowerCase());
+                        entornoEjecucion="local";
+                        
                         elem.getInstrucciones().setAct(true);
                         run(elem.getInstrucciones(),TS);
                         elem.getInstrucciones().setAct(false);
+                        
+                        pilaPertenece.remove(pilaPertenece.size()-1);
+                        if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                            entornoEjecucion="global";
+                        }
                         return;
                     }
                 
@@ -805,10 +867,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             if(raiz.obtenerHijo(2).getHijos().size()==2){ //&& si lenviarParam-> lenviarParam1 )
                 for(tablaJson elem: TS){
                     if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(0).getLex())){
+                        pilaPertenece.add(raiz.obtenerHijo(0).getLex().toLowerCase());
+                        entornoEjecucion="local";
+                        
                         agregarValorParametros(raiz.obtenerHijo(2).obtenerHijo(0),TS,1,raiz.obtenerHijo(0).getLex());
                         elem.getInstrucciones().setAct(true);
                         run(elem.getInstrucciones(),TS);
                         elem.getInstrucciones().setAct(false);
+                        
+                        pilaPertenece.remove(pilaPertenece.size()-1);
+                        if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                            entornoEjecucion="global";
+                        }
                         return;
                     }
                 
@@ -819,9 +889,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
                 for(tablaJson elem: TS){
                     if(elem.getId().equalsIgnoreCase(raiz.obtenerHijo(0).getLex())){
+                        pilaPertenece.add(raiz.obtenerHijo(0).getLex().toLowerCase());
+                        entornoEjecucion="local";
+                        
                         elem.getInstrucciones().setAct(true);
                         run(elem.getInstrucciones(),TS);
                         elem.getInstrucciones().setAct(false);
+                        
+                        
+                        pilaPertenece.remove(pilaPertenece.size()-1);
+                        if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
+                            entornoEjecucion="global";
+                        }
                         return;
                     }
                 
@@ -871,7 +950,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("+") ){// asignacion -> id + +
             
             for(tablaJson elemento: TS){
-                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase()))){
+                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase())) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
                     try{
                         switch(elemento.getTipo()){
 
@@ -906,10 +985,10 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             }
             imprimirConsolaLn("Error Semantico, Variable no declarada");
            
-        }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("-") ){// asignacion -> id + +
+        }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("-") ){// asignacion -> id - -
             
             for(tablaJson elemento: TS){
-                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase()))){
+                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase())) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
                     try{
                         switch(elemento.getTipo()){
 
@@ -1014,19 +1093,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             switch(String.valueOf(raiz.obtenerHijo(0).getResult())){
                     
                 case "cadena":
-                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",""));
+                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),""));
                     break;
                 case "caracter":
-                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",'0'));
+                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),'0'));
                     break;
                 case "binario":
-                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),1));
                     break;
                 case "doble":
-                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",0.0));
+                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0.0));
                     break;
                 case "entero":
-                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",0));
+                    TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0));
                     break;
                 case "void":
                     imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
@@ -1037,19 +1116,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             switch(String.valueOf(raiz.obtenerHijo(2).getResult())){
                     
                 case "cadena":
-                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","string","global","main",""));
+                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","string",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),""));
                     break;
                 case "caracter":
-                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","char","global","main",'0'));
+                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","char",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),'0'));
                     break;
                 case "binario":
-                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","bool","global","main",1));
+                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","bool",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),1));
                     break;
                 case "doble":
-                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","double","global","main",0.0));
+                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","double",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0.0));
                     break;
                 case "entero":
-                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","int","global","main",0));
+                    TS.add(new tablaJson(raiz.obtenerHijo(3).getLex().toLowerCase(),"var","int",entornoEjecucion,pilaPertenece.get(pilaPertenece.size()-1),0));
                     break;
                 case "void":
                     imprimirConsolaLn("Error Semantico, no se puede crear una variable tipo void");
