@@ -8,6 +8,7 @@ package analizador;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import structuras.tablaJson;
+import structuras.fallos;
 import structuras.arbol;
 import java_cup.runtime.XMLElement;
 
@@ -686,9 +687,14 @@ public class parser extends java_cup.runtime.lr_parser {
 
 
         arbol resultado;
+        public ArrayList<fallos> listaErrores = new ArrayList();
 
         public arbol getArbol(){
                 return resultado;
+        }
+
+        public ArrayList<fallos> getErrores(){
+                return listaErrores;
         }
 
         ArrayList<tablaJson> tablaS = new ArrayList();
@@ -698,11 +704,13 @@ public class parser extends java_cup.runtime.lr_parser {
         }
 
         public void syntax_error(Symbol s){
-	        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+ " en la columna " + s.left);
+	        System.out.println("Sintax error: " +s.value + " en la columna " + s.right+ " en la linea " + s.left);
+                listaErrores.add(new fallos(String.valueOf(s.value),"Error Sintax",s.left,s.right));
         }
 
         public void unrecovered_syntax_error(Symbol s)throws java.lang.Exception{
-	        System.out.println("Sintax error: " +s.value + " en la línea " + s.right+" en la columna " + s.left);
+	        System.out.println("Sintax error: " +s.value + " en la columna " + s.right+" en la linea " + s.left);
+                listaErrores.add(new fallos(String.valueOf(s.value),"Error Lexico",s.left,s.right));
         }
 
 
