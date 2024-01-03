@@ -39,7 +39,8 @@ terminal String AND,OR,NOT;
 terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE,RVOID;
-terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR,RDO,RFOR;
+terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR,RDO,RFOR,RSWITCH,RCASE,RDEFAULT,DOSPUNTOS;
+terminal String RBREAK,RCONTINUE,RRETURN;
 
 
 
@@ -93,6 +94,10 @@ non terminal arbol lf1,lparam,lparam1;
 non terminal arbol llamadaFM,lenviarParam,lenviarParam1,callFunc;
 
 non terminal arbol senDoWhile,senFor;
+
+non terminal arbol senSwitch,listCase,listCase1;
+
+non terminal arbol senReturn;
 
 
 
@@ -167,8 +172,129 @@ instruccion::= declaracion1:a {: arbol instruccion = new arbol("instruccion");
                 
                 RESULT=instruccion;
         :}
+        |senSwitch:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                
+                RESULT=instruccion;
+        :}
+        |RCONTINUE:continue1 PUNTOCOMA:pc {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(new arbol(continue1));
+                instruccion.añadirHijo(new arbol(pc));
+                
+                RESULT=instruccion;
+        :}
+
+        |RBREAK:break1 PUNTOCOMA:pc {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(new arbol(break1));
+                instruccion.añadirHijo(new arbol(pc));
+                
+                RESULT=instruccion;
+        :}
+
+        |senReturn:v1 {: arbol instruccion = new arbol("instruccion");
+                instruccion.añadirHijo(v1);
+                
+                RESULT=instruccion;
+        :}
+; 
+
+senReturn ::= RRETURN:return1 PUNTOCOMA:pc {: arbol senReturn = new arbol("senReturn");
+                senReturn.añadirHijo(new arbol(return1));
+                senReturn.añadirHijo(new arbol(pc));
+                
+                RESULT=senReturn;
+        :}
+        |RRETURN:return1 expLog:v1 PUNTOCOMA:pc {: arbol senReturn = new arbol("senReturn");
+                senReturn.añadirHijo(new arbol(return1));
+                senReturn.añadirHijo(v1);
+                senReturn.añadirHijo(new arbol(pc));
+                
+                RESULT=senReturn;
+        :}
 ;
 
+senSwitch ::= RSWITCH:switch1 PAR_IZQ:parI ID:id PAR_DER:parD LL_IZQ:llI listCase:listaCasos LL_DER:llD {: 
+                
+                arbol senSwitch = new arbol("senSwitch");
+               
+                senSwitch.añadirHijo(new arbol(switch1));
+                senSwitch.añadirHijo(new arbol(parI));
+                senSwitch.añadirHijo(new arbol(id));
+                senSwitch.añadirHijo(new arbol(parD));
+                //dec1.setAct(false);
+                senSwitch.añadirHijo(new arbol(llI));
+
+                senSwitch.añadirHijo(listaCasos);
+                senSwitch.añadirHijo(new arbol(llD));
+                
+                
+             
+                RESULT= senSwitch;
+                :}
+
+;
+
+listCase::= listCase:v1 listCase1:v2 {: 
+                
+                arbol listCase = new arbol("listCase");
+                        
+                listCase.añadirHijo(v1);
+                listCase.añadirHijo(v2);
+                
+                RESULT= listCase;
+                :}
+        |listCase1:v1 {: 
+                
+                arbol listCase = new arbol("listCase");            
+            
+                listCase.añadirHijo(v1);
+             
+                RESULT= listCase;
+                :}
+;
+
+listCase1::= RCASE:caso1 expLog:v1 DOSPUNTOS:dosP instrucciones:ins1 {: 
+                
+                arbol listCase1 = new arbol("listCase1");
+               
+                listCase1.añadirHijo(new arbol(caso1));
+                
+                
+               
+
+                listCase1.añadirHijo(v1);
+                listCase1.añadirHijo(new arbol(dosP));
+         
+                
+             
+                ins1.setAct(false);
+                listCase1.añadirHijo(ins1);
+                
+
+                RESULT= listCase1;
+                :}
+        |RDEFAULT:default1 DOSPUNTOS:dosP instrucciones:ins1 {: 
+                
+                arbol listCase1 = new arbol("listCase1");
+               
+                listCase1.añadirHijo(new arbol(default1));
+                
+                
+               
+
+             
+                listCase1.añadirHijo(new arbol(dosP));
+         
+                
+             
+                ins1.setAct(false);
+                listCase1.añadirHijo(ins1);
+                
+
+                RESULT= listCase1;
+                :}
+        
+;
 
 senFor::= RFOR:for1 PAR_IZQ:parI declaracion1:dec1 expLog:v1 PUNTOCOMA:pc asignacion:asig1 PAR_DER:parD LL_IZQ:llI instrucciones:ins1 LL_DER:llD {: 
                 

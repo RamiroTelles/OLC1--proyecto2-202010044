@@ -1445,6 +1445,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }else if(raiz.getLex().equals("}")){
             nodos += "n"+raiz.getId()+"[label=LLave_Cierra];\n";
             
+        }else if(raiz.getLex().equals(":")){
+            nodos += "n"+raiz.getId()+"[label=dosPuntos];\n";
+            
         }else if(raiz.getLex().charAt(0)=='\"'){
             //nodos += "n"+raiz.getId()+"[label="+raiz.getLex().substring(1,raiz.getLex().length()-1)+"];\n";
             nodos += "n"+raiz.getId()+"[label=cadena];\n";

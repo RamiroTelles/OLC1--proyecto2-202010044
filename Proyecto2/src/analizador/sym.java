@@ -8,6 +8,7 @@ package analizador;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
+  public static final int DOSPUNTOS = 49;
   public static final int PAR_DER = 5;
   public static final int DISTINTO = 22;
   public static final int RIMPRIMIR = 39;
@@ -16,8 +17,10 @@ public class sym {
   public static final int RWHILE = 42;
   public static final int POR = 15;
   public static final int TCHAR = 10;
+  public static final int RCONTINUE = 51;
   public static final int RVOID = 38;
   public static final int LL_DER = 7;
+  public static final int RDEFAULT = 48;
   public static final int INT = 29;
   public static final int PUNTOCOMA = 30;
   public static final int COR_DER = 3;
@@ -44,13 +47,17 @@ public class sym {
   public static final int RCHAR = 34;
   public static final int MAYOR = 17;
   public static final int POTENCIA = 11;
+  public static final int RRETURN = 52;
+  public static final int RCASE = 47;
   public static final int LL_IZQ = 6;
   public static final int COR_IZQ = 2;
+  public static final int RSWITCH = 46;
   public static final int STRING = 27;
   public static final int RINT = 33;
   public static final int REJECUTAR = 43;
   public static final int RFOR = 45;
   public static final int RBOOL = 35;
+  public static final int RBREAK = 50;
   public static final int RIF = 40;
   public static final int EQUIVALENTE = 21;
   public static final int MAS = 13;
@@ -100,7 +107,14 @@ public class sym {
   "RWHILE",
   "REJECUTAR",
   "RDO",
-  "RFOR"
+  "RFOR",
+  "RSWITCH",
+  "RCASE",
+  "RDEFAULT",
+  "DOSPUNTOS",
+  "RBREAK",
+  "RCONTINUE",
+  "RRETURN"
   };
 }
 

@@ -99,6 +99,48 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
     return new Symbol(sym.RFOR,yyline,yychar,yytext());
 }
 
+"selector" {  
+    System.out.println("Reconocio switch: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RSWITCH",yyline,yycolumn));
+
+    return new Symbol(sym.RSWITCH,yyline,yychar,yytext());
+}
+
+"continuar" {  
+    System.out.println("Reconocio continue: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RCONTINUE",yyline,yycolumn));
+
+    return new Symbol(sym.RCONTINUE,yyline,yychar,yytext());
+}
+
+"cortar" {  
+    System.out.println("Reconocio break: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RBREAK",yyline,yycolumn));
+
+    return new Symbol(sym.RBREAK,yyline,yychar,yytext());
+}
+
+"retorno" {  
+    System.out.println("Reconocio return: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RRETURN",yyline,yycolumn));
+
+    return new Symbol(sym.RRETURN,yyline,yychar,yytext());
+}
+
+"caso" {  
+    System.out.println("Reconocio caso: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RCASE",yyline,yycolumn));
+
+    return new Symbol(sym.RCASE,yyline,yychar,yytext());
+}
+
+"pordefecto" {  
+    System.out.println("Reconocio caso: "+yytext());
+    listaTokens.add(new elToken(yytext(),"RDEFAULT",yyline,yycolumn));
+
+    return new Symbol(sym.RDEFAULT,yyline,yychar,yytext());
+}
+
 "hacer" {  
     System.out.println("Reconocio do: "+yytext());
     listaTokens.add(new elToken(yytext(),"RDO",yyline,yycolumn));
@@ -203,6 +245,11 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/>"
         listaTokens.add(new elToken(yytext(),"PUNTOCOMA",yyline,yycolumn));
         
         return new Symbol(sym.PUNTOCOMA,yyline,yychar, yytext());} 
+
+":" { System.out.println("Reconocio "+yytext()+" :"); 
+        listaTokens.add(new elToken(yytext(),"DOSPUNTOS",yyline,yycolumn));
+        
+        return new Symbol(sym.DOSPUNTOS,yyline,yychar, yytext());} 
 
 "," { System.out.println("Reconocio "+yytext()+" , coma"); 
         listaTokens.add(new elToken(yytext(),"COMA",yyline,yycolumn));
