@@ -185,6 +185,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     private void analizarJSON(String txt){
         ArrayList<elToken> listaTokens = new ArrayList();
         ArrayList<fallos> listaErrores = new ArrayList();
+        ArrayList<fallos> listaErroresSintax = new ArrayList();
         ArrayList<tablaJson> TS = new ArrayList();
         
         try{
@@ -195,6 +196,8 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             //arbol resultado = parser1.getArbol();
             arbol resultado = (arbol)parser1.parse().value;
             resultado.enumerarArbol(resultado, 0);
+            listaErroresSintax = parser1.getErrores();
+            listaErrores.addAll(listaErroresSintax);
             graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
             
@@ -216,6 +219,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             generarReporteErrores(listaErrores,"erroresJson");
             generarReporteTokens(listaTokens,"tokensJson");
+            generarReporteTablaJson(TS,"TS");
             //agregarNombreArchivo();
             //imprimirTablaJson();
             
@@ -1314,7 +1318,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             pw.println("<table border=1>");
             pw.println("<tr>");
             pw.println("<td>Lexema</td>");
-            pw.println("<td>DESCRIPCION</td>");
+            pw.println("<td>Tipo</td>");
             pw.println("<td>FILA</td>");
             pw.println("<td>COLUMNA</td>");
             pw.println("</tr>");
@@ -1348,7 +1352,62 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }
     }
     
+    public void generarReporteTablaJson(ArrayList<tablaJson> tablaS,String nombre) throws IOException {
+        FileWriter fichero=null;
+        PrintWriter pw;
+        try {
+            
+            String path = nombre + ".html";
+            fichero = new FileWriter(path);
+            pw = new PrintWriter(fichero);
+            
+            //Comenzamos a escribir el html
+            pw.println("<html>");
+            pw.println("<head><title>REPORTE DE ERRORES</title></head>");
+            pw.println("<body>");
+            pw.println("<div align=\"center\">");
+            pw.println("<h1>Reporte de Errores</h1>");
+            pw.println("<br></br>");
+            pw.println("<table border=1>");
+            pw.println("<tr>");
+            pw.println("<td>Id</td>");
+            pw.println("<td>Rol</td>");
+            pw.println("<td>Tipo</td>");
+            pw.println("<td>Entorno</td>");
+            pw.println("<td>Pertenece</td>");
+            pw.println("<td>valor</td>");
+            pw.println("</tr>");
 
+            for (tablaJson elem : tablaS) {
+                pw.println("<tr>");
+                pw.println("<td>" + elem.getId() + "</td>");
+                pw.println("<td>" + elem.getRol() + "</td>");
+                pw.println("<td>" + elem.getTipo() + "</td>");
+                pw.println("<td>" + elem.getEntorno() + "</td>");
+                pw.println("<td>" + elem.getPertenece() + "</td>");
+                pw.println("<td>" + String.valueOf(elem.getValor()) + "</td>");
+                pw.println("</tr>");
+            }
+
+            pw.println("</table>");
+            pw.println("</div");
+            pw.println("</body>");
+            pw.println("</html>");
+            //Desktop.getDesktop().open(new File(path));
+            
+            
+        } catch (Exception e) {
+        } finally {
+            if (fichero != null) {
+                fichero.close();
+            }
+        }
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     
     
