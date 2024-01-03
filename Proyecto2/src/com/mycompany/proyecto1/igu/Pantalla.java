@@ -413,7 +413,19 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 
             }catch(Exception e){
                 
-                imprimirConsolaLn("Error Semantico");
+                try{
+                    String num1 = String.valueOf(raiz.obtenerHijo(0).getResult());
+                    String num2 = String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+                    
+                    String op= String.valueOf(raiz.obtenerHijo(1).obtenerHijo(0).getLex());
+                    
+                    raiz.setResult(calcularRelacionales(num1,num2,op));
+                    
+                }catch(Exception e1){
+                   imprimirConsolaLn("Error Semantico, 1"); 
+                }
+                
+                
             }
             
             
@@ -1248,6 +1260,35 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                             resultado=0;
                         }
                         break;
+                    
+                }
+        
+        return resultado;
+    }
+    
+    public int calcularRelacionales(String num1, String num2,String op){
+        int resultado=0;
+        
+        switch(op){
+                 
+                  
+                    case "==":
+                        
+                        if(num1.equals(num1)){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    case "!=":
+                        
+                        if(!num1.equals(num2)){
+                            resultado=1;
+                        }else{
+                            resultado=0;
+                        }
+                        break;
+                    
                     
                 }
         
