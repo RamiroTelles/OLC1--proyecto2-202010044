@@ -201,7 +201,9 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             arbol resultado = (arbol)parser1.parse().value;
             resultado.enumerarArbol(resultado, 0);
             listaErroresSintax = parser1.getErrores();
+            listaErrores.addAll(scan1.getErrores());
             listaErrores.addAll(listaErroresSintax);
+            generarReporteErrores(listaErrores,"erroresJson");
             graficarAST(resultado,"AST");
             System.out.println("Analisis realizado correctamente");
             
@@ -216,12 +218,12 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             
             listaTokens.addAll(scan1.getTokens());
-            listaErrores.addAll(scan1.getErrores());
+            
             //tabJson.addAll(parser1.getTabla());
             //imprimirTokens(listaTokens);
             //imprimirErrores(listaErrores);
             
-            generarReporteErrores(listaErrores,"erroresJson");
+            
             generarReporteTokens(listaTokens,"tokensJson");
             generarReporteTablaJson(TS,"TS");
             //agregarNombreArchivo();
@@ -530,6 +532,116 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             raiz.setResult(null);
            
         }else if(raiz.getLex().equals("declaracion1")){// declaracion1 -> tipo id declaracion2
+            //busco si existe para rescribir el valor
+            
+             for(tablaJson elemento: TS){
+                if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(1).getLex().toLowerCase())) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
+                    if(raiz.obtenerHijo(2).getResult()==null){
+                        
+                        try{
+                            switch(elemento.getTipo()){
+
+                                case "string":
+                                 
+                                    elemento.setValor("");
+                                   
+
+                                    break;
+                                case "char":
+                                 
+                                    elemento.setValor('0');
+                                 
+                                        
+                                  
+
+                                    break;
+                                case "bool":
+
+                                    elemento.setValor("1");
+                                    break;
+                                case "double":
+                                    elemento.setValor(0.0);
+                                    break;
+                                case "int":
+
+
+                                  
+                                    elemento.setValor(0);
+                                    break;
+                            } 
+
+                        }catch(Exception e){
+
+                            imprimirConsolaLn("Error Semantico,valor no acorde al tipo");
+
+                        }
+                        
+                        
+                    }else{
+                         try{
+                            switch(elemento.getTipo()){
+
+                                case "string":
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\"'){
+                                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                        elemento.setValor(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                    }else{
+                                        imprimirConsolaLn("Error Semantico");
+                                    }
+
+                                    break;
+                                case "char":
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    if(String.valueOf(raiz.obtenerHijo(2).getResult()).charAt(0)=='\''){
+                                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                        elemento.setValor(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                    }else{
+                                        imprimirConsolaLn("Error Semantico");
+                                    }
+
+                                    break;
+                                case "bool":
+
+                                    if( String.valueOf( raiz.obtenerHijo(2).getResult()).equals("1") ){
+                                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                                        elemento.setValor("1");
+                                    }else if(String.valueOf( raiz.obtenerHijo(2).getResult()).equals("0")){
+                                        //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",0));
+                                        elemento.setValor("0");
+                                    }else{
+                                        imprimirConsolaLn("Error Semantico, valor no acorde al tipo");
+                                    }
+
+                                    break;
+                                case "double":
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                                    elemento.setValor(Double.parseDouble(String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    break;
+                                case "int":
+
+
+                                    double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(2).getResult()));
+                                    int r2 = (int)r1;
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
+                                    elemento.setValor(r2);
+                                    break;
+                            } 
+
+                        }catch(Exception e){
+
+                            imprimirConsolaLn("Error Semantico,valor no acorde al tipo");
+
+                        }
+                    }
+                    
+                   
+                    
+                    return;
+                    
+                }
+            }
+           
             
             if(raiz.obtenerHijo(2).getResult()==null){
                 //Se envia valor Predeterminado
@@ -710,8 +822,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 raiz.obtenerHijo(5).setAct(true);
                 run(raiz.obtenerHijo(5),TS);
                 raiz.obtenerHijo(5).setAct(false);
-                run(raiz.obtenerHijo(2),TS); //ejecuto otra vez la condicion para actualizarla
                 continueActive=false;
+                run(raiz.obtenerHijo(2),TS); //ejecuto otra vez la condicion para actualizarla
+                
+                
+                    
+                
+                
+                
+                if(breakActive){
+                    break;
+                }
+                
             }
             inControlFlow=false;
             breakActive=false;
@@ -983,14 +1105,17 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
  
             do{
-                continueActive=false;
+                
                 inControlFlow=true;
                 raiz.obtenerHijo(2).setAct(true);
                 run(raiz.obtenerHijo(2),TS);
                 raiz.obtenerHijo(2).setAct(false);
+                continueActive=false;
                 run(raiz.obtenerHijo(6),TS); //ejecuto otra vez la condicion para actualizarla
                 
-                
+                if(breakActive){
+                    break;
+                }
             }while(String.valueOf(raiz.obtenerHijo(6).getResult()).equals("1"));
             inControlFlow=false;
             breakActive=false;
@@ -1084,12 +1209,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 run(raiz.obtenerHijo(8),TS);
                 raiz.obtenerHijo(8).setAct(false);
                 
+                continueActive=false;
+                
                 raiz.obtenerHijo(5).setAct(true); //ejecuto asignacion
                 run(raiz.obtenerHijo(5),TS);
                 raiz.obtenerHijo(5).setAct(false);
                 
                 run(raiz.obtenerHijo(3),TS); //ejecuto otra vez la condicion para actualizarla
-                continueActive=false;
+                
+                
+                if(breakActive){
+                    break;
+                }
             }
             inControlFlow=false;
             breakActive=false;
@@ -1212,6 +1343,22 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 }
             }
             imprimirConsolaLn("Error Semantico, metodo no declarado");
+            
+            return;
+        }else if(raiz.getLex().equals("valorFun") ){// valor -> callFun
+            
+            for(tablaJson elemento: TS){
+                if(elemento.getId().equalsIgnoreCase(raiz.obtenerHijo(0).obtenerHijo(0).getLex()) && elemento.getRol().equals("metodo")){
+                    
+                    raiz.setResult(elemento.getValor());
+                    return;
+                }
+            }
+            
+            
+            imprimirConsolaLn("Error Semantico, Variable no declarada");
+            
+            
             
             return;
         }

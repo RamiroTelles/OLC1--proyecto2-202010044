@@ -2868,7 +2868,7 @@ class CUP$parser$actions {
 		int v1left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int v1right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		arbol v1 = (arbol)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 arbol valor = new arbol("valor");
+		 arbol valor = new arbol("valorFun");
                         valor.añadirHijo(v1);
                 RESULT=valor;
                 

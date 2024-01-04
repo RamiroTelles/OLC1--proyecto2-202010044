@@ -984,7 +984,7 @@ valor ::= STRING:v1 {: arbol valor = new arbol("valor");
                         valor.añadirHijo(new arbol(v1));
                 RESULT=valor;
                 :}
-        |callFunc:v1 {: arbol valor = new arbol("valor");
+        |callFunc:v1 {: arbol valor = new arbol("valorFun");
                         valor.añadirHijo(v1);
                 RESULT=valor;
                 :}
