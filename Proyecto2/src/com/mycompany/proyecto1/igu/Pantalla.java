@@ -57,7 +57,11 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
     
     private ArrayList<String> pilaPertenece= new ArrayList();
     private String entornoEjecucion="global";
-
+    private boolean breakActive=false;
+    private boolean returnActive=false;
+    private boolean continueActive=false;
+    private boolean inControlFlow= false;
+    private ArrayList<arbol> defaultIns= new ArrayList();
    
     public Pantalla() {
         initComponents();
@@ -237,7 +241,23 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         for(arbol var: raiz.getHijos()){
             if(var.isAct()){
                 run(var,TS);
-            }  
+            }
+            
+            if(breakActive || continueActive){
+                if(inControlFlow){
+                    return;
+                }else{
+                    breakActive=false;
+                    continueActive=false;
+                }
+            }
+            
+            if(returnActive){
+                return;
+            }
+            
+            
+            
         }
         
         
@@ -686,11 +706,16 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         }else if(raiz.getLex().equals("senWhile") ){// senWhile -> while ( expLog ) { instrucciones }
             
             while( String.valueOf(raiz.obtenerHijo(2).getResult()).equals("1") ){
+                inControlFlow=true;
                 raiz.obtenerHijo(5).setAct(true);
                 run(raiz.obtenerHijo(5),TS);
                 raiz.obtenerHijo(5).setAct(false);
                 run(raiz.obtenerHijo(2),TS); //ejecuto otra vez la condicion para actualizarla
+                continueActive=false;
             }
+            inControlFlow=false;
+            breakActive=false;
+            continueActive=false;
             
             
         }else if(raiz.getLex().equals("lf1") ){// lf1 -> tipo id ( lparam 
@@ -845,6 +870,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
                             entornoEjecucion="global";
                         }
+                        returnActive=false;
                         return;
                     }
                 
@@ -866,6 +892,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
                             entornoEjecucion="global";
                         }
+                        returnActive=false;
                         return;
                     }
                 
@@ -895,6 +922,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
                             entornoEjecucion="global";
                         }
+                        returnActive=false;
                         return;
                     }
                 
@@ -917,6 +945,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                         if(pilaPertenece.get(pilaPertenece.size()-1).equalsIgnoreCase("main")){
                             entornoEjecucion="global";
                         }
+                        returnActive=false;
                         return;
                     }
                 
@@ -954,12 +983,18 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
  
             do{
+                continueActive=false;
+                inControlFlow=true;
                 raiz.obtenerHijo(2).setAct(true);
                 run(raiz.obtenerHijo(2),TS);
                 raiz.obtenerHijo(2).setAct(false);
                 run(raiz.obtenerHijo(6),TS); //ejecuto otra vez la condicion para actualizarla
                 
+                
             }while(String.valueOf(raiz.obtenerHijo(6).getResult()).equals("1"));
+            inControlFlow=false;
+            breakActive=false;
+            continueActive=false;
             
             
             
@@ -1044,6 +1079,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
  
           
             while(String.valueOf(raiz.obtenerHijo(3).getResult()).equals("1")){
+                inControlFlow=true;
                 raiz.obtenerHijo(8).setAct(true);
                 run(raiz.obtenerHijo(8),TS);
                 raiz.obtenerHijo(8).setAct(false);
@@ -1053,10 +1089,131 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                 raiz.obtenerHijo(5).setAct(false);
                 
                 run(raiz.obtenerHijo(3),TS); //ejecuto otra vez la condicion para actualizarla
+                continueActive=false;
+            }
+            inControlFlow=false;
+            breakActive=false;
+            continueActive=false;
+            
+            
+        }else if(raiz.getLex().equals("senSwitch") ){// senSwitch -> switch ( id ) { listCase }
+            
+            for(tablaJson elemento: TS){
+                if(raiz.obtenerHijo(2).getLex().equalsIgnoreCase(elemento.getId()) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
+                    
+                    //raiz.setResult(elemento.getValor());
+                    inControlFlow=true;
+                    ejecutarListCase(elemento.getValor(),raiz.obtenerHijo(5),false,TS);
+//                    boolean resultSwitch=ejecutarListCase(elemento.getValor(),raiz.obtenerHijo(5),false,TS);
+                    
+                    
+//                    if(defaultIns.size()>1){
+//                        imprimirConsolaLn("Error Semantico, Variable no declarada");
+//                        return;
+//                    }else if(defaultIns.size()==1 && (!resultSwitch)){
+//                        defaultIns.get(0).setAct(true);
+//                        run(defaultIns.get(0),TS);
+//                        defaultIns.get(0).setAct(true);
+//                    }
+//                    
+                    
+                    inControlFlow=false;
+                    breakActive=false;
+                    continueActive=false;
+                    return;
+                }
             }
             
             
+            imprimirConsolaLn("Error Semantico, Variable no declarada");
             
+            
+        }else if(raiz.getLex().equals("cortar") ){// instrucciones -> break ;
+            
+            breakActive=true;
+            
+            return;
+        }else if(raiz.getLex().equals("continuar") ){// instrucciones -> continue ;
+            
+            continueActive=true;
+            
+            return;
+        }else if(raiz.getLex().equals("senReturn") && raiz.getHijos().size()==2){// senReturn -> return ;
+            //validar si se está dentro de una funcion
+            
+            returnActive=true;
+            
+            return;
+        }else if(raiz.getLex().equals("senReturn") && raiz.getHijos().size()==3){// instrucciones -> return expLog ;
+            //validar si se está dentro de una funcion
+            // Poner el valor del return en la TS
+            returnActive=true;
+            
+            for(tablaJson elemento: TS){
+                if(elemento.getId().equals(pilaPertenece.get(pilaPertenece.size()-1)) && elemento.getRol().equals("metodo")){
+                    try{
+                        switch(elemento.getTipo()){
+
+                            case "string":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                if(String.valueOf(raiz.obtenerHijo(1).getResult()).charAt(0)=='\"'){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    elemento.setValor(String.valueOf(raiz.obtenerHijo(1).getResult()));
+                                }else{
+                                    imprimirConsolaLn("Error Semantico, valor no acorde al tipo");
+                                }
+                                
+                                break;
+                            case "char":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","char","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                if(String.valueOf(raiz.obtenerHijo(1).getResult()).charAt(0)=='\''){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","string","global","main",String.valueOf(raiz.obtenerHijo(2).getResult())));
+                                    elemento.setValor(String.valueOf(raiz.obtenerHijo(1).getResult()));
+                                }else{
+                                    imprimirConsolaLn("Error Semantico, valor no acorde al tipo");
+                                }
+                                
+                                break;
+                            case "bool":
+
+                                if( String.valueOf( raiz.obtenerHijo(1).getResult()).equals("1") ){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",1));
+                                    elemento.setValor("1");
+                                }else if(String.valueOf( raiz.obtenerHijo(1).getResult()).equals("0")){
+                                    //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","bool","global","main",0));
+                                    elemento.setValor("0");
+                                }else{
+                                    imprimirConsolaLn("Error Semantico, valor no acorde al tipo");
+                                }
+
+                                break;
+                            case "double":
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","double","global","main",Double.valueOf( String.valueOf(raiz.obtenerHijo(2).getResult()))));
+                                elemento.setValor(Double.parseDouble(String.valueOf(raiz.obtenerHijo(1).getResult())));
+                                break;
+                            case "int":
+
+
+                                double r1 = Double.valueOf(String.valueOf(raiz.obtenerHijo(1).getResult()));
+                                int r2 = (int)r1;
+                                //TS.add(new tablaJson(raiz.obtenerHijo(1).getLex().toLowerCase(),"var","int","global","main",r2));
+                                elemento.setValor(r2);
+                                break;
+                        } 
+
+                    }catch(Exception e){
+
+                        imprimirConsolaLn("Error Semantico,valor no acorde al tipo");
+
+                    }
+                    
+                    return;
+                    
+                }
+            }
+            imprimirConsolaLn("Error Semantico, metodo no declarado");
+            
+            return;
         }
         
         
@@ -1065,6 +1222,116 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
         
         
         
+    }
+    
+    public boolean ejecutarListCase(Object valor, arbol raiz, boolean condicion1,ArrayList<tablaJson> TS){
+        
+        for(arbol elem: raiz.getHijos()){
+            condicion1=ejecutarListCase(valor,elem,condicion1,TS);
+        }
+        
+        if(raiz.getHijos().size()==1 && raiz.getLex().equals("listCase")){ // listCase -> listCase1
+            
+            if(raiz.obtenerHijo(0).obtenerHijo(0).getLex().equalsIgnoreCase("pordefecto") && condicion1==false){ // ejecutar default //&& listCase1 -> Default : instrucciones
+                raiz.obtenerHijo(0).obtenerHijo(2).setAct(true);
+                run(raiz.obtenerHijo(0).obtenerHijo(2),TS);
+                raiz.obtenerHijo(0).obtenerHijo(2).setAct(false);
+                condicion1=true;
+                //defaultIns.add(raiz.obtenerHijo(0).obtenerHijo(2));
+            }else if(raiz.obtenerHijo(0).obtenerHijo(0).getLex().equalsIgnoreCase("caso")){                                                                                                     //listCase1 -> Case expLog : instrucciones
+                try{
+                    Double num1 = Double.valueOf(String.valueOf(valor));
+                    Double num2 = Double.valueOf( String.valueOf(raiz.obtenerHijo(0).obtenerHijo(1).getResult()) );
+
+                    String op= "==";
+
+                    if(calcularRelacionales(num1,num2,op)==1){
+                        raiz.obtenerHijo(0).obtenerHijo(3).setAct(true);
+                        run(raiz.obtenerHijo(0).obtenerHijo(3),TS);
+                        raiz.obtenerHijo(0).obtenerHijo(3).setAct(false);
+                        condicion1=true;
+                    }
+
+
+                }catch(Exception e){
+
+                    try{
+                        String num1 = String.valueOf(valor);
+                        String num2 = String.valueOf( raiz.obtenerHijo(0).obtenerHijo(1).getResult());
+
+                        String op= "==";
+
+                        if(calcularRelacionales(num1,num2,op)==1){
+                            raiz.obtenerHijo(0).obtenerHijo(3).setAct(true);
+                            run(raiz.obtenerHijo(0).obtenerHijo(3),TS);
+                            raiz.obtenerHijo(0).obtenerHijo(3).setAct(false);
+                            condicion1=true;
+                        }
+
+                    }catch(Exception e1){
+                       imprimirConsolaLn("Error Semantico, listcase1 1"); 
+                    }
+
+
+                }
+                
+            }
+            
+            
+        }else if( raiz.getHijos().size()==2 && raiz.getLex().equals("listCase") ){ // listCase -> listCase listCase1
+            
+            if( (raiz.obtenerHijo(1).obtenerHijo(0).getLex().equalsIgnoreCase("pordefecto") && condicion1==false) || (condicion1==true && breakActive==false && raiz.obtenerHijo(1).obtenerHijo(0).getLex().equalsIgnoreCase("pordefecto"))){ // ejecutar default //&& listCase1 -> Default : instrucciones
+                raiz.obtenerHijo(1).obtenerHijo(2).setAct(true);
+                run(raiz.obtenerHijo(1).obtenerHijo(2),TS);
+                raiz.obtenerHijo(1).obtenerHijo(2).setAct(false);
+                condicion1=true;
+                //defaultIns.add(raiz.obtenerHijo(0).obtenerHijo(2));
+            }else if(raiz.obtenerHijo(1).obtenerHijo(0).getLex().equalsIgnoreCase("caso")){                                                                                                     //listCase1 -> Case expLog : instrucciones
+                try{
+                    Double num1 = Double.valueOf(String.valueOf(valor));
+                    Double num2 = Double.valueOf( String.valueOf(raiz.obtenerHijo(1).obtenerHijo(1).getResult()) );
+
+                    String op= "==";
+
+                    if(calcularRelacionales(num1,num2,op)==1 || condicion1){
+                        raiz.obtenerHijo(1).obtenerHijo(3).setAct(true);
+                        run(raiz.obtenerHijo(1).obtenerHijo(3),TS);
+                        raiz.obtenerHijo(1).obtenerHijo(3).setAct(false);
+                        condicion1=true;
+                    }
+
+
+                }catch(Exception e){
+
+                    try{
+                        String num1 = String.valueOf(valor);
+                        String num2 = String.valueOf( raiz.obtenerHijo(1).obtenerHijo(1).getResult());
+
+                        String op= "==";
+
+                        if(calcularRelacionales(num1,num2,op)==1){
+                            raiz.obtenerHijo(1).obtenerHijo(3).setAct(true);
+                            run(raiz.obtenerHijo(1).obtenerHijo(3),TS);
+                            raiz.obtenerHijo(1).obtenerHijo(3).setAct(false);
+                            condicion1=true;
+                        }
+
+                    }catch(Exception e1){
+                       imprimirConsolaLn("Error Semantico, listcase1 2"); 
+                    }
+
+
+                }
+                
+            }
+            
+        }
+        
+        
+        
+        
+        
+        return condicion1;
     }
     
     public int agregarValorParametros(arbol raiz,ArrayList<tablaJson> TS,int num,String id){
@@ -1278,7 +1545,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
                   
                     case "==":
                         
-                        if(num1.equals(num1)){
+                        if(num1.equals(num2)){
                             resultado=1;
                         }else{
                             resultado=0;
