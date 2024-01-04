@@ -724,7 +724,7 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             raiz.setResult(raiz.obtenerHijo(0).getLex().toLowerCase());
            
-        }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("=") ){// asignacion -> id = expLog 
+        }else if(raiz.getLex().equals("asignacion") && raiz.obtenerHijo(1).getLex().equals("=") ){// asignacion -> id = expLog || id = expTern
             
             for(tablaJson elemento: TS){
                 if(elemento.getId().equals(String.valueOf(raiz.obtenerHijo(0).getLex().toLowerCase())) && (elemento.getPertenece().equalsIgnoreCase(pilaPertenece.get(pilaPertenece.size()-1)) || elemento.getEntorno().equalsIgnoreCase("global"))){
@@ -1361,6 +1361,22 @@ public class Pantalla extends javax.swing.JFrame implements ActionListener{
             
             
             return;
+        }else if(raiz.getLex().equals("expTern") && raiz.obtenerHijo(0).getLex().equals("expLog")){// expTern -> expLog
+            raiz.setResult(raiz.obtenerHijo(0).getResult());
+            
+            
+            
+            
+        }else if(raiz.getLex().equals("expTern") && raiz.obtenerHijo(0).getLex().equals("opTernario")){// expTern -> opTern
+                                                                                                        //opTernario ->  expLog ? expLog : expLog 
+            if( String.valueOf(raiz.obtenerHijo(0).obtenerHijo(0).getResult()).equals("1")){
+                raiz.setResult(raiz.obtenerHijo(0).obtenerHijo(2).getResult());
+            }else if(String.valueOf(raiz.obtenerHijo(0).obtenerHijo(0).getResult()).equals("0")){
+                raiz.setResult(raiz.obtenerHijo(0).obtenerHijo(4).getResult());
+            }else{
+                imprimirConsolaLn("Error Semantico, Condicion no valida en op ternario");
+            }
+
         }
         
         

@@ -11,6 +11,7 @@ public class sym {
   public static final int DOSPUNTOS = 49;
   public static final int PAR_DER = 5;
   public static final int DISTINTO = 22;
+  public static final int INTERROGACION = 53;
   public static final int RIMPRIMIR = 39;
   public static final int RSTRING = 31;
   public static final int RTRUE = 36;
@@ -114,7 +115,8 @@ public class sym {
   "DOSPUNTOS",
   "RBREAK",
   "RCONTINUE",
-  "RRETURN"
+  "RRETURN",
+  "INTERROGACION"
   };
 }
 

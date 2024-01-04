@@ -48,7 +48,7 @@ terminal String ID,STRING,DECIMAL,INT;
 terminal String PUNTOCOMA;
 terminal String RSTRING,RDOUBLE,RINT,RCHAR,RBOOL,RTRUE,RFALSE,RVOID;
 terminal String RIMPRIMIR,RIF,RELSE,RWHILE,REJECUTAR,RDO,RFOR,RSWITCH,RCASE,RDEFAULT,DOSPUNTOS;
-terminal String RBREAK,RCONTINUE,RRETURN;
+terminal String RBREAK,RCONTINUE,RRETURN,INTERROGACION;
 
 
 
@@ -106,6 +106,10 @@ non terminal arbol senDoWhile,senFor;
 non terminal arbol senSwitch,listCase,listCase1;
 
 non terminal arbol senReturn;
+
+non terminal arbol opTernario;
+
+non terminal arbol expTern;
 
 
 
@@ -585,7 +589,7 @@ sImprimir::= RIMPRIMIR:imprimir PAR_IZQ:parI expLog:v1 PAR_DER:parD PUNTOCOMA:pu
 ;
 
 
-asignacion::= ID:id IGUAL:igual expLog:v1 {: arbol asignacion = new arbol("asignacion");
+asignacion::= ID:id IGUAL:igual expTern:v1 {: arbol asignacion = new arbol("asignacion");
                         
                        
                                                 
@@ -642,7 +646,7 @@ declaracion1 ::= varTipo:tipo ID:id declaracion2:dec2 {: arbol declaracion1 = ne
 
 
 
-declaracion2::= IGUAL:igual expLog:v1 PUNTOCOMA:pc {: arbol declaracion2 = new arbol("declaracion2");
+declaracion2::= IGUAL:igual expTern:v1 PUNTOCOMA:pc {: arbol declaracion2 = new arbol("declaracion2");
                         
                        
                                                 declaracion2.añadirHijo(new arbol(igual));
@@ -682,6 +686,19 @@ varTipo ::= RSTRING:v1 {: arbol varTipo = new arbol("varTipo");
                         varTipo.añadirHijo(new arbol(v1));
                 RESULT=varTipo;
                 :}
+;
+
+expTern ::= expLog:v1 {: arbol expTern = new arbol("expTern");
+                        expTern.añadirHijo(v1);
+                RESULT=expTern;
+                :}
+        |opTernario:v1 {: arbol expTern = new arbol("expTern");
+                        expTern.añadirHijo(v1);
+                RESULT=expTern;
+                :}
+
+
+
 ;
 
 expLog::= expLog:v1 OR:or expLog1:v2 {: arbol expLog = new arbol("expLog");
@@ -930,6 +947,7 @@ expPrima::= PAR_IZQ:parI expLog:v1 PAR_DER:parD {: arbol expPrima = new arbol("e
                                         expPrima.añadirHijo(new arbol(parD));
                                         RESULT=expPrima;
                                         :}
+       
         |valor1:v1 {: arbol expPrima = new arbol("expPrima");
                         expPrima.añadirHijo(v1);
                 RESULT=expPrima;
@@ -988,6 +1006,19 @@ valor ::= STRING:v1 {: arbol valor = new arbol("valor");
                         valor.añadirHijo(v1);
                 RESULT=valor;
                 :}
+        
+;
+
+opTernario::=   expLog:v1 INTERROGACION:interrogacion1 expLog:v2 DOSPUNTOS:dosP2 expLog:v3 {: arbol opTernario = new arbol("opTernario");
+
+                //opTernario.añadirHijo(new arbol(dosP1));
+                opTernario.añadirHijo(v1);
+                opTernario.añadirHijo(new arbol(interrogacion1));
+                opTernario.añadirHijo(v2);
+                opTernario.añadirHijo(new arbol(dosP2));
+                opTernario.añadirHijo(v3);
+                RESULT=opTernario;
+        :}
 ;
 
 callFunc::= ID:id PAR_IZQ:parI lenviarParam:parametros {: arbol callFunc = new arbol("callFunc");

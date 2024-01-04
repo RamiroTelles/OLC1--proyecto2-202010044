@@ -256,6 +256,11 @@ COM_MULTI ="/*"([^ \*\/]|{SALTOLINEA})* "*/"
         
         return new Symbol(sym.COMA ,yyline,yycolumn, yytext());} 
 
+"?" { System.out.println("Reconocio "+yytext()+" ? "); 
+        listaTokens.add(new elToken(yytext(),"INTERROGACION",yyline,yycolumn));
+        
+        return new Symbol(sym.INTERROGACION ,yyline,yycolumn, yytext());} 
+
 "{" { System.out.println("Reconocio "+yytext()+" {"); 
     listaTokens.add(new elToken(yytext(),"LL_IZQ",yyline,yycolumn));
     return new Symbol(sym.LL_IZQ,yyline,yycolumn, yytext());} 
